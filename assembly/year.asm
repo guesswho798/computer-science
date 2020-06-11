@@ -13,6 +13,7 @@ intro3 db 'You will need to write the sentence on the screen.$'
 intro4 db 'Are you ready? Press any button to continue...$'
 outro1 db 'Play again? (y/n)$'
 outro2 db 'bye bye!$'
+openingError db 'An error has occured at opening the file!$'
 
 ;starter time staps for calculations
 hour db 0
@@ -58,26 +59,30 @@ lenght db 0
 CODESEG
 
 proc intro
-	mov ah, 9h
 	mov dx, offset intro1
-	int 21h
+	call printSentence
+
 	mov al, 10
 	call printCharacter
-	mov ah, 9h
+
 	mov dx, offset intro2
-	int 21h
+	call printSentence
+
 	mov al, 10
 	call printCharacter
-	mov ah, 9h
+
 	mov dx, offset intro3
-	int 21h
+	call printSentence
+
 	mov al, 10
 	call printCharacter
-	mov ah, 9h
+
 	mov dx, offset intro4
-	int 21h
+	call printSentence
+
 	mov ah, 7h
 	int 21h
+
 	ret
 endp intro
 
@@ -85,7 +90,6 @@ proc getRand
 	push ax
 	push cx
 	push dx
-
 
 	;getting time
 	mov ah, 2ch
@@ -95,6 +99,8 @@ proc getRand
 	mov al, dl
 	and al, 00001111b
 	mov [rand], al
+
+	;getting line
 
 	cmp [rand], 0
 	JNE next1
@@ -235,12 +241,24 @@ proc getRand
 	ret
 endp getRand
 
+proc printSentence
+	push ax
+
+	mov ah, 9h
+	int 21h
+
+	pop ax
+	ret
+endp printSentence
+
 proc printCharacter
 	push ax
 	push dx
+
 	mov ah,2
 	mov dl, al
 	int 21h
+	
 	pop dx
 	pop ax
 	ret
@@ -250,16 +268,18 @@ proc printNumber
 	push ax
 	push bx
 	push dx
+
 	mov bx,offset divisorTable
 	nextDigit:
 	xor ah,ah ;dx:ax = number
 	div [byte ptr bx] ;al = quotient, ah = remainder
 	add al,'0'
-	call printCharacter ; Display the quotient
+	call printCharacter ;display the quotient
 	mov al,ah ;ah = remainder
 	add bx,1 ;bx = address of next divisor
 	cmp [byte ptr bx],0 ;Have all divisors been done?
 	jne nextDigit
+
 	pop dx
 	pop bx
 	pop ax
@@ -326,17 +346,21 @@ proc incor
 	push ax
 	push bx
 	push cx
+
 	mov ah, 09h
 	mov cx, 1h
 	mov al, 20h
 	mov bl, 40h ;This is red color with white
 	int 10h
-	pop cx
-	pop bx
-	pop ax
+
 	xor ah, ah
 	mov al, 'X'
 	call printCharacter ;printing the input from player
+
+	pop cx
+	pop bx
+	pop ax
+
 	ret
 endp incor
 
@@ -361,9 +385,8 @@ start:
 	mov al, 10
 	call printCharacter
 	call printCharacter
-	mov ah, 9h
 	mov dx, [offsets] ;offsets is the offset of the chosen sentence
-	int 21h
+	call printSentence
 	mov al, 13
 	call printCharacter ;moving the cursor back to the start of the line
 
@@ -453,6 +476,10 @@ l:
 	mov bl, 60
 	mul bl
 	mov al, [second]
+	cmp al, 60
+	JL show
+	sub [second], 60
+	add [minute], 1
 	jmp show
 
 	h:
@@ -470,22 +497,20 @@ l:
 	;displaying the time it took
 	mov al, 10
 	call printCharacter ;line down
-	mov ah, 9h
 	mov dx, offset TIME
-	int 21h ; "Time: "
+	call printSentence ; "Time: "
 	mov al, [minute]
-	add al, 48
+	add al, '0'
 	call printCharacter ;writing minutes
 	mov al, ':'
-	call printCharacter ;writing ':'
+	call printCharacter
 	xor ah, ah
 	mov al, [second]
 	call printNumber
 
     ;words per minute
-    mov ah, 9h
 	mov dx, offset WPM
-	int 21h
+	call printSentence
 	xor dx, dx
 	mov ax, 600
 	mov bl, [second]
@@ -495,9 +520,8 @@ l:
 	;displaying the times player made a mistake
 	mov al, 10
 	call printCharacter
-	mov ah, 9h
 	mov dx, offset wrongs
-	int 21h
+	call printSentence
 	mov al, [wrong]
 	call printnumber
 
@@ -505,9 +529,8 @@ l:
 	pa:
 	mov al, 10
 	call printCharacter
-	mov ah, 9
 	mov dx, offset outro1
-	int 21h ;outro text
+	call printSentence ;outro text
 	mov ah, 7h
 	int 21h
 	xor bx, bx ;reseting bx for the next round
@@ -521,8 +544,7 @@ l:
 	mov al, 10
 	call printCharacter
 	mov dx, offset outro2
-	mov ah, 9
-	int 21h
+	call printSentence
 
 exit:
 	mov ax, 4c00h
