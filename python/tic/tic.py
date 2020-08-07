@@ -1,9 +1,9 @@
 # importing the required libraries 
 import pygame as pg 
-import sys 
-import time 
 from pygame.locals import *
-import math
+import sys, time
+import math, random
+import socket
 
 # for storing the 'x' or 'o' 
 # value as character
@@ -18,6 +18,10 @@ white = (255, 255, 255)
 black = (0, 0, 0)
 background = (34, 34, 51)
 foreground = (170, 204, 255)
+server = True
+ip = ""
+port = 0
+name = ""
 
 # setting up a 3 * 3 * 3 board
 board = [[[None]*3, [None]*3, [None]*3], [[None]*3, [None]*3, [None]*3], [[None]*3, [None]*3, [None]*3]]
@@ -39,10 +43,18 @@ x_img = pg.transform.scale(x_img, (80, 80))
 o_img = pg.transform.scale(y_img, (80, 80))
 circle_img = pg.transform.scale(circle_img, (80, 80))
 
+def add_text(text1, size=15, width=width / 2, height=height / 2, color1=(255, 255, 255)):
+    if type(text1) != 'str':
+        text1 = str(text1)
+    font = pg.font.SysFont("comicsansms", size)
+    text = font.render(text1, True, color1)
+    loc = (width, height)
+    screen.blit(text, loc)
+    return loc
 
 def menu():
-
     done = False
+
     while(not done):
 
         for event in pg.event.get(): 
@@ -56,15 +68,14 @@ def menu():
                     if y > height / 7 * 5 and y < height / 7 * 6:
                         done = True
                     if y > height / 7 * 6 and y < height / 7 * 7:
-                        print("opstions")
+                        options()
                     if  y > height / 7 * 7 and y < height / 7 * 8:
                         pg.quit() 
-                        sys.exit() 
-
-
+                        sys.exit()
 
         screen.fill(background)
 
+        #draw the text
         str1 = "Totally Normal X's O's"
         str2 = "o_0"
         str3 = "Play"
@@ -80,14 +91,155 @@ def menu():
         pg.display.update()
         CLOCK.tick(fps)
 
-def add_text(text1, size=15, width=width / 2, height=height / 2, color1=(255, 255, 255)):
-    if type(text1) != 'str':
-        text1 = str(text1)
-    font = pg.font.SysFont("comicsansms", size)
-    text = font.render(text1, True, color1)
-    loc = (width, height)
-    screen.blit(text, loc)
-    return loc
+def options():
+    global server, name, ip, port
+
+    input_box_name = pg.Rect(width / 10 * 1.8, height / 7 * 3 + 10, 300, 30)
+    input_box_ip = pg.Rect(width / 10 * 1.4, height / 7 * 4 + 10, 300, 30)
+    input_box_port = pg.Rect(width / 10 * 1.8, height / 7 * 5 + 10, 300, 30)
+    font = pg.font.Font(None, 32)
+    color_inactive = black
+    color_active = white
+    color_ip = color_inactive
+    color_port = color_inactive
+    color_name = color_inactive
+    active_ip = False
+    active_port = False
+    active_name = False
+    text_ip = ip
+    text_name = name
+    if port == 0 and server == True:
+        text_port = str(random.randint(10000,60000))
+    elif port == 0 and server == False:
+        text_port = ""
+    else:
+        text_port = str(port)
+    done = False
+
+    while(not done):
+
+        if server == True:
+            text_ip = text_ip = socket.gethostbyname(socket.gethostname())
+
+        for event in pg.event.get(): 
+            if event.type == QUIT: 
+                pg.quit() 
+                sys.exit() 
+            elif event.type is MOUSEBUTTONDOWN: 
+                x, y = pg.mouse.get_pos()
+
+                #if pressed in the center of the screen
+                if abs(x - width / 10 * 1.4) < 55 and y > height / 7 * 2 and y < height / 7 * 3:
+                    server = True
+                    text_port = str(random.randint(10000,60000))
+                elif abs(x - width / 10 * 2.4) < 55 and y > height / 7 * 2 and y < height / 7 * 3:
+                    server = False
+                    text_ip = ""
+                    text_port = ""
+                elif abs(x - width / 10 * 1.4) < 55 and y > height / 7 * 6 and y < height / 7 * 7:
+                    done = True
+
+                # ip box collider
+                if input_box_ip.collidepoint(event.pos):
+                    # Toggle the active variable.
+                    active_ip = not active_ip
+                else:
+                    active_ip = False
+                if active_ip == False:
+                    ip = text_ip
+                # Change color
+                color_ip = color_active if active_ip else color_inactive
+
+                # port box collider
+                if input_box_port.collidepoint(event.pos):
+                    # Toggle the active variable.
+                    active_port = not active_port
+                else:
+                    active_port = False
+                if active_port == False:
+                    port = text_port
+                # Change color
+                color_port = color_active if active_port else color_inactive
+
+                # name box collider
+                if input_box_name.collidepoint(event.pos):
+                    # Toggle the active variable.
+                    active_name = not active_port
+                else:
+                    active_name = False
+                if active_name == False:
+                    name = text_name
+                # Change color
+                color_name = color_active if active_name else color_inactive
+            elif event.type == pg.KEYDOWN:
+                if active_ip:
+                    if event.key == pg.K_RETURN:
+                        ip = text_ip
+                        active_ip = not active_ip
+                        color_ip = color_active if active_ip else color_inactive
+                    elif event.key == pg.K_BACKSPACE:
+                        text_ip = text_ip[:-1]
+                    else:
+                        text_ip += event.unicode
+                if active_port:
+                    if event.key == pg.K_RETURN:
+                        port = text_port
+                        active_port = not active_port
+                        color_port = color_active if active_port else color_inactive
+                    elif event.key == pg.K_BACKSPACE:
+                        text_port = text_port[:-1]
+                    else:
+                        text_port += event.unicode
+
+                if active_name:
+                    if event.key == pg.K_RETURN:
+                        name = text_name
+                        active_name = not active_name
+                        color_name = color_active if active_name else color_inactive
+                    elif event.key == pg.K_BACKSPACE:
+                        text_name = text_name[:-1]
+                    else:
+                        text_name += event.unicode
+
+
+        screen.fill(background)
+
+        str1 = "Options"
+        str2 = "Server"
+        str3 = "Client"
+        str4 = "Name: "
+        str5 = "IP: "
+        str6 = "PORT: "
+        str7 = "Back"
+
+        add_text(str1, 30, width / 10, height / 7 * 1, foreground)
+        add_text(str2, 30, width / 10, height / 7 * 2, foreground)
+        add_text(str3, 30, width / 10 * 2, height / 7 * 2, foreground)
+        if server:
+            pg.draw.rect(screen, black, ((width / 10 - 5, height / 7 * 2 + 5), (110, 40)), 4)
+        else:
+            pg.draw.rect(screen, black, ((width / 10 * 2 - 10, height / 7 * 2 + 5), (100, 40)), 4)
+        add_text(str4, 30, width / 10, height / 7 * 3, foreground)
+        add_text(str5, 30, width / 10, height / 7 * 4, foreground)
+        add_text(str6, 30, width / 10, height / 7 * 5, foreground)
+        add_text(str7, 30, width / 10, height / 7 * 6, foreground)
+
+        # Render the current text.
+        txt_surface_ip = font.render(text_ip, True, color_ip)
+        txt_surface_port = font.render(text_port, True, color_port)
+        txt_surface_name = font.render(text_name, True, color_name)
+        # Blit the text.
+        screen.blit(txt_surface_ip, (input_box_ip.x+5, input_box_ip.y+5))
+        screen.blit(txt_surface_port, (input_box_port.x+5, input_box_port.y+5))
+        screen.blit(txt_surface_name, (input_box_name.x+5, input_box_name.y+5))
+        # Blit the input_box rect.
+        pg.draw.rect(screen, color_ip, input_box_ip, 2)
+        pg.draw.rect(screen, color_port, input_box_port, 2)
+        pg.draw.rect(screen, color_name, input_box_name, 2)
+
+        
+        pg.display.update()
+        CLOCK.tick(fps)
 
 def game_initiating_window(): 
     
