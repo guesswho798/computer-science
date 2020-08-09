@@ -4,14 +4,13 @@ from pygame.locals import *
 import sys, time
 import math, random
 import socket
+import threading
 
 # for storing the 'x' or 'o' 
 # value as character
 XO = 'x'
 winner = None
 draw = None
-
-# to set width of the game window 
 width = 1200
 height = 400
 white = (255, 255, 255)
@@ -22,6 +21,12 @@ server = True
 ip = ""
 port = 0
 name = ""
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+opponent_name = ""
+client = None
+last_move = ""
+rcv = False 
+
 
 # setting up a 3 * 3 * 3 board
 board = [[[None]*3, [None]*3, [None]*3], [[None]*3, [None]*3, [None]*3], [[None]*3, [None]*3, [None]*3]]
@@ -48,12 +53,117 @@ def add_text(text1, size=15, width=width / 2, height=height / 2, color1=(255, 25
         text1 = str(text1)
     font = pg.font.SysFont("comicsansms", size)
     text = font.render(text1, True, color1)
-    loc = (width, height)
+    loc = (int(width), int(height))
     screen.blit(text, loc)
     return loc
 
+def local_multiplayer():
+    game_initiating_window()
+
+    while(True):
+        for event in pg.event.get():
+            if event.type == QUIT:
+                pg.quit()
+                sys.exit()
+            elif event.type is MOUSEBUTTONDOWN:
+                user_click()
+                if(winner or draw):
+                    reset_game()
+        pg.display.update()
+        CLOCK.tick(fps)
+
+def online_multiplayer():
+    global s, client, last_move, rcv
+    game_initiating_window()
+
+    my_turn = False
+
+    if client != None:
+        my_turn = True        
+
+    while(True):
+        if my_turn == False and client != None and rcv == True:
+            rcv = False
+            move = last_move.split("|")
+            drawXO(int(move[0]), int(move[1]))
+            my_turn = True
+            check_win()
+            if(winner or draw):
+                reset_game()
+        elif my_turn == False and client == None and rcv == True:
+            rcv = False
+            move = last_move.split("|")
+            drawXO(int(move[0]), int(move[1]))
+            my_turn = True
+            check_win()
+            if(winner or draw):
+                reset_game()
+        for event in pg.event.get():
+            if event.type == QUIT:
+                pg.quit()
+                sys.exit()
+            elif event.type is MOUSEBUTTONDOWN:
+                if my_turn:
+                    move = user_click()
+                    if move != None:
+                        my_turn = False
+                        if client != None:
+                            client.send(move.encode())
+                        else:
+                            s.send(move.encode())
+                if(winner or draw):
+                    reset_game()
+        pg.display.update()
+        CLOCK.tick(fps)
+
+def wait():
+    global ip, port, name, s, opponent_name, client
+    if ip == "":
+        ip = socket.gethostbyname(socket.gethostname())
+    if int(port) == 0 or str(port) == "":
+        port = str(random.randint(10000,60000))
+
+    screen.fill(background)
+    str1 = "waiting for client..."
+    str2 = "ip: " + ip
+    str3 = "port: " + str(port)
+    add_text(str1, 30, width / 2 - len(str1) * 7, height / 7 * 1, foreground)
+    add_text(str2, 30, width / 2 - len(str2) * 7, height / 7 * 2, foreground)
+    add_text(str3, 30, width / 2 - len(str3) * 7, height / 7 * 3, foreground)
+
+    pg.display.update()
+    s.bind(('', int(port)))
+    s.listen(1)
+    client, address = s.accept()
+    opponent_name = client.recv(1024).decode()
+    client.send(name.encode())
+
+    t = threading.Thread(target=listener)
+    t.start()
+
+def connect():
+    global ip, port, name, s
+
+    s.connect((ip, int(port)))
+    s.send(name.encode())
+    opponent_name = s.recv(1024).decode()
+    t = threading.Thread(target=listener)
+    t.start()
+
+def listener():
+    global client, s, last_move, rcv
+    while True:
+        if client == None:
+            last_move = s.recv(1024).decode()
+            rcv = True
+        else:
+            last_move = client.recv(1024).decode()
+            rcv = True
+
 def menu():
     done = False
+
+    play = ""
 
     while(not done):
 
@@ -65,8 +175,18 @@ def menu():
                 x, y = pg.mouse.get_pos()
                 #if pressed in the center of the screen
                 if abs(x - width / 2) < 75:
+                    if y > height / 7 * 4 and y < height / 7 * 5 and name != "":
+                        if server == True:
+                            wait()
+                            done = True
+                            play = "online"
+                        elif ip != "" or port != "":
+                            connect()
+                            done = True
+                            play = "online"
                     if y > height / 7 * 5 and y < height / 7 * 6:
                         done = True
+                        play = "local"
                     if y > height / 7 * 6 and y < height / 7 * 7:
                         options()
                     if  y > height / 7 * 7 and y < height / 7 * 8:
@@ -78,18 +198,22 @@ def menu():
         #draw the text
         str1 = "Totally Normal X's O's"
         str2 = "o_0"
-        str3 = "Play"
-        str4 = "Options"
-        str5 = "Exit"
+        str3 = "Play Online"
+        str4 = "Local Multiplayer"
+        str5 = "Options"
+        str6 = "Exit"
 
         add_text(str1, 30, width / 2 - len(str1) * 7, height / 7, foreground)
         add_text(str2, 30, width / 2 - len(str2) * 7, height / 7 * 2, foreground)
-        add_text(str3, 30, width / 2 - len(str2) * 7, height / 7 * 5, foreground)
-        add_text(str4, 30, width / 2 - len(str2) * 7, height / 7 * 6, foreground)
-        add_text(str5, 30, width / 2 - len(str2) * 7, height / 7 * 7, foreground)
+        add_text(str3, 30, width / 2 - len(str3) * 7, height / 7 * 4, foreground)
+        add_text(str4, 30, width / 2 - len(str4) * 7, height / 7 * 5, foreground)
+        add_text(str5, 30, width / 2 - len(str5) * 7, height / 7 * 6, foreground)
+        add_text(str6, 30, width / 2 - len(str6) * 7, height / 7 * 7, foreground)
         
         pg.display.update()
         CLOCK.tick(fps)
+
+    return play
 
 def options():
     global server, name, ip, port
@@ -119,7 +243,7 @@ def options():
     while(not done):
 
         if server == True:
-            text_ip = text_ip = socket.gethostbyname(socket.gethostname())
+            text_ip = socket.gethostbyname(socket.gethostname())
 
         for event in pg.event.get(): 
             if event.type == QUIT: 
@@ -241,7 +365,7 @@ def options():
         pg.display.update()
         CLOCK.tick(fps)
 
-def game_initiating_window(): 
+def game_initiating_window():
     
     
     # updating the display 
@@ -269,7 +393,7 @@ def game_initiating_window():
     pg.draw.line(screen, black, (width / 3 * 2 + 10, height / 3 * 2), (width, height / 3 * 2), 7)
     draw_status() 
 
-def draw_status(): 
+def draw_status():
     
     # getting the global variable draw 
     # into action 
@@ -296,8 +420,8 @@ def draw_status():
     text_rect = text.get_rect(center =(width / 2, 500-50)) 
     screen.blit(text, text_rect) 
     pg.display.update() 
-    
-def check_win(): 
+
+def check_win():
     global board, winner, draw 
 
     #checking on different boards
@@ -400,8 +524,8 @@ def check_win():
 
 
     draw_status() 
-    
-def drawXO(row, col): 
+
+def drawXO(row, col):
     global board, XO 
     
     # for the first row, the image 
@@ -435,29 +559,28 @@ def drawXO(row, col):
             XO = 'x'
     pg.display.update()
 
-def user_click(): 
+def user_click():
     # get coordinates of mouse click 
     x, y = pg.mouse.get_pos()
 
     #checking if move is valid
-    if y < 400:
+    if y < height:
         # get column and row of mouse click (0-8) (0-2)
         sizex = width / 9
         sizey = height / 3
         col = math.floor(x / sizex)
         row = math.floor(y / sizey)
     
-        # after getting the row and col, 
-        # we need to draw the images at 
-        # the desired positions
-        #if(row and col and board[x][row-1][col-1] is None): 
+        #drawing and cheking win
         global XO
         drawXO(row, col)
         check_win()
+        return str(row) + "|" + str(col)
+    return None
 
-def reset_game(): 
+def reset_game():
     global board, winner, XO, draw 
-    time.sleep(2) 
+    time.sleep(2)
     XO = 'x'
     draw = None
     game_initiating_window()
@@ -466,26 +589,12 @@ def reset_game():
 
 def main():
 
-    menu()
+    play = menu()
 
-    game_initiating_window()
-
-    while(True): 
-        for event in pg.event.get(): 
-            if event.type == QUIT: 
-                pg.quit() 
-                sys.exit() 
-            #if event.type == pg.KEYDOWN:
-            #    if event.key == pg.K_ESCAPE:
-            #        menu()
-            #        game_initiating_window()
-            #        reset_game()
-            elif event.type is MOUSEBUTTONDOWN:
-                user_click() 
-                if(winner or draw):
-                    reset_game()
-        pg.display.update()
-        CLOCK.tick(fps)
+    if play == "online":
+        online_multiplayer()
+    elif play == "local":
+        local_multiplayer()
 
 
 if __name__ == '__main__':
