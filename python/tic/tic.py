@@ -20,12 +20,14 @@ foreground = (170, 204, 255)
 server = True
 ip = ""
 port = 0
-name = ""
+name = "Raz"
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 opponent_name = ""
 client = None
 last_move = ""
-rcv = False 
+rcv = False
+win = 0
+lose = 0
 
 
 # setting up a 3 * 3 * 3 board
@@ -73,46 +75,99 @@ def local_multiplayer():
         CLOCK.tick(fps)
 
 def online_multiplayer():
-    global s, client, last_move, rcv
+    global s, client, last_move, rcv, name, opponent_name, win, lose
     game_initiating_window()
 
     my_turn = False
 
     if client != None:
-        my_turn = True        
+        my_turn = True
+            
 
     while(True):
+
+        #swiching who is first
+        str1 = ""
+        str2 = ""
+        if win + lose % 2 == 0:
+            if client != None:
+                str1 = name + " is x"
+                str2 = opponent_name + " is o"
+            else:
+                str1 = name + " is o"
+                str2 = opponent_name + " is x"
+        else:
+            if client != None:
+                str1 = name + " is o"
+                str2 = opponent_name + " is x"
+            else:
+                str1 = name + " is x"
+                str2 = opponent_name + " is o"
+
+
+        #reciving information
         if my_turn == False and client != None and rcv == True:
             rcv = False
             move = last_move.split("|")
             drawXO(int(move[0]), int(move[1]))
             my_turn = True
-            check_win()
-            if(winner or draw):
+            w = check_win()
+            if str1[len(str1) - 1] == w:
+                win = win + 1
+                print("win " + str(win))
+                reset_game()
+            elif str2[len(str2) - 1] == w:
+                lose = lose + 1
+                print("lose " + str(lose))
                 reset_game()
         elif my_turn == False and client == None and rcv == True:
             rcv = False
             move = last_move.split("|")
             drawXO(int(move[0]), int(move[1]))
             my_turn = True
-            check_win()
-            if(winner or draw):
+            w = check_win()
+            if str1[len(str1) - 1] == w:
+                win = win + 1
+                print("win " + str(win))
+                reset_game()
+            elif str2[len(str2) - 1] == w:
+                lose = lose + 1
+                print("lose " + str(lose))
                 reset_game()
         for event in pg.event.get():
             if event.type == QUIT:
                 pg.quit()
                 sys.exit()
             elif event.type is MOUSEBUTTONDOWN:
+                #sending information
                 if my_turn:
-                    move = user_click()
+                    #telling the user click function not to check winner so we could here
+                    move = user_click(False)
+                    w = check_win()
+                    if str1[len(str1) - 1] == w:
+                        win = win + 1
+                        print("win " + str(win))
+                        reset_game()
+                    elif str2[len(str2) - 1] == w:
+                        lose = lose + 1
+                        print("lose " + str(lose))
+                        reset_game()
                     if move != None:
                         my_turn = False
                         if client != None:
                             client.send(move.encode())
                         else:
                             s.send(move.encode())
-                if(winner or draw):
-                    reset_game()
+
+        #deleting backgound of text so it wont overlay
+        screen.fill(black, (5, height + 30, 100, 50))
+        screen.fill(black, (width - len(str2) * 10, height + 30, 100, 50))
+
+        #text for names
+        add_text(str1, 20, 5, height + 30)
+        add_text(str2, 20, width - len(str2) * 13, height + 30)
+        add_text(str(win), 20, 5 + len(str1), height + 55)
+        add_text(str(lose), 20, width - len(str2) * 10, height + 55)
         pg.display.update()
         CLOCK.tick(fps)
 
@@ -142,7 +197,7 @@ def wait():
     t.start()
 
 def connect():
-    global ip, port, name, s
+    global ip, port, name, s, opponent_name
 
     s.connect((ip, int(port)))
     s.send(name.encode())
@@ -175,7 +230,7 @@ def menu():
                 x, y = pg.mouse.get_pos()
                 #if pressed in the center of the screen
                 if abs(x - width / 2) < 75:
-                    if y > height / 7 * 4 and y < height / 7 * 5 and name != "":
+                    if y > height / 7 * 3 and y < height / 7 * 4 and name != "":
                         if server == True:
                             wait()
                             done = True
@@ -184,14 +239,17 @@ def menu():
                             connect()
                             done = True
                             play = "online"
-                    if y > height / 7 * 5 and y < height / 7 * 6:
+                    if y > height / 7 * 4 and y < height / 7 * 5:
                         done = True
                         play = "local"
-                    if y > height / 7 * 6 and y < height / 7 * 7:
+                    if y > height / 7 * 5 and y < height / 7 * 6:
                         options()
+                    if  y > height / 7 * 6 and y < height / 7 * 7:
+                        tutorial()
                     if  y > height / 7 * 7 and y < height / 7 * 8:
                         pg.quit() 
                         sys.exit()
+
 
         screen.fill(background)
 
@@ -201,19 +259,98 @@ def menu():
         str3 = "Play Online"
         str4 = "Local Multiplayer"
         str5 = "Options"
-        str6 = "Exit"
+        str6 = "Tutorial"
+        str7 = "Exit"
 
-        add_text(str1, 30, width / 2 - len(str1) * 7, height / 7, foreground)
-        add_text(str2, 30, width / 2 - len(str2) * 7, height / 7 * 2, foreground)
-        add_text(str3, 30, width / 2 - len(str3) * 7, height / 7 * 4, foreground)
-        add_text(str4, 30, width / 2 - len(str4) * 7, height / 7 * 5, foreground)
-        add_text(str5, 30, width / 2 - len(str5) * 7, height / 7 * 6, foreground)
-        add_text(str6, 30, width / 2 - len(str6) * 7, height / 7 * 7, foreground)
+        add_text(str1, 30, width / 2 - len(str1) * 7, height / 7 * 0, foreground)
+        add_text(str2, 30, width / 2 - len(str2) * 7, height / 7 * 1, foreground)
+        add_text(str3, 30, width / 2 - len(str3) * 7, height / 7 * 3, foreground)
+        add_text(str4, 30, width / 2 - len(str4) * 7, height / 7 * 4, foreground)
+        add_text(str5, 30, width / 2 - len(str5) * 7, height / 7 * 5, foreground)
+        add_text(str6, 30, width / 2 - len(str6) * 7, height / 7 * 6, foreground)
+        add_text(str7, 30, width / 2 - len(str7) * 7, height / 7 * 7, foreground)
         
         pg.display.update()
         CLOCK.tick(fps)
 
     return play
+
+def tutorial():
+
+    #which step into the tutorial is the player
+    step = 1
+
+    game_initiating_window()
+    while(True):
+        for event in pg.event.get():
+            if event.type == QUIT:
+                pg.quit()
+                sys.exit()
+            elif event.type is MOUSEBUTTONDOWN: 
+                x, y = pg.mouse.get_pos()
+                #if pressed in button
+                if abs(x - (width - 80)) < 60 and y > height + 50 and y < height + 90:
+                    step = step + 1
+
+        if step == 1:
+            screen.fill(black, (0, height + 30, 500, 70))
+            add_text("Welcome to the tutorial in 3D Tic Tac Toe.", 20, 5, height + 25, white)
+            add_text("I will go through a game and explain some moves.", 20, 5, height + 48, white)
+            add_text("Press the 'Next ->' botton on the right to continue...", 20, 5, height + 72, white)
+        elif step == 2:
+            screen.fill(black, (0, height + 30, 500, 70))
+            add_text("In front of you are 3 boards, the one on the left", 20, 5, height + 25, white)
+            add_text("is the top one the middle one is the center board", 20, 5, height + 48, white)
+            add_text("and the right one is the buttom board.", 20, 5, height + 72, white)
+        elif step == 3:
+            screen.fill(black, (0, height + 30, 500, 70))
+            add_text("The rules are the same as normal tic tac toe.", 20, 5, height + 25, white)
+            add_text("You can win by getting three x's or o's in a row", 20, 5, height + 48, white)
+            add_text("a column or a diagonal.", 20, 5, height + 72, white)
+        elif step == 4:
+            screen.fill(black, (0, height + 30, 500, 70))
+            add_text("The first move played here was the center of", 20, 5, height + 25, white)
+            add_text("center board, a good starting move to control", 20, 5, height + 48, white)
+            add_text("a key spot in all boards", 20, 5, height + 72, white)
+            drawXO(1, 4)
+        elif step == 5:
+            screen.fill(black, (0, height + 30, 500, 70))
+            drawXO(0, 0)
+        elif step == 6:
+            screen.fill(black, (0, height + 30, 500, 70))
+            add_text("Player one is all ready threatening to win in the", 20, 5, height + 25, white)
+            add_text("next move with the center of the buttom board", 20, 5, height + 48, white)
+            drawXO(1, 1)
+        elif step == 7:
+            screen.fill(black, (0, height + 30, 500, 70))
+            add_text("Player two defends", 20, 5, height + 25, white)
+            drawXO(1, 7)
+        elif step == 8:
+            screen.fill(black, (0, height + 30, 500, 70))
+            add_text("Player one will win in the next move by placing", 20, 5, height + 25, white)
+            add_text("an X in the right side of the top board or the", 20, 5, height + 48, white)
+            add_text("right side of the buttom board and getting a diagonal", 20, 5, height + 72, white)
+            drawXO(1, 0)
+        elif step == 9:
+            screen.fill(black, (0, height + 30, 500, 70))
+            add_text("Player two tries to defend", 20, 5, height + 25, white)
+            drawXO(1, 2)
+        elif step == 10:
+            drawXO(1, 8)
+            #sending true so the buttom of the screen wont flicker
+            check_win(True)
+            screen.fill(black, (0, height + 30, 500, 70))
+            add_text("Player one wins.", 20, 5, height + 25, white)
+            add_text("Press next to go back to menu", 20, 5, height + 48, white)
+        elif step == 11:
+            break
+
+        #next button
+        pg.draw.rect(screen, white, ((width - 125, height + 50), (115, 40)), 3)
+        add_text("Next ->", 30, width - 120, height + 50, white)
+
+        pg.display.update()
+        CLOCK.tick(fps)
 
 def options():
     global server, name, ip, port
@@ -233,7 +370,9 @@ def options():
     text_ip = ip
     text_name = name
     if port == 0 and server == True:
-        text_port = str(random.randint(10000,60000))
+        #change this back later
+        #text_port = str(random.randint(10000,60000))
+        text_port = "55555"
     elif port == 0 and server == False:
         text_port = ""
     else:
@@ -258,8 +397,8 @@ def options():
                     text_port = str(random.randint(10000,60000))
                 elif abs(x - width / 10 * 2.4) < 55 and y > height / 7 * 2 and y < height / 7 * 3:
                     server = False
-                    text_ip = ""
-                    text_port = ""
+                    text_ip = "127.0.0.1"
+                    text_port = "55555"
                 elif abs(x - width / 10 * 1.4) < 55 and y > height / 7 * 6 and y < height / 7 * 7:
                     done = True
 
@@ -391,6 +530,9 @@ def game_initiating_window():
 
     pg.draw.line(screen, black, (width / 3 * 2 + 10, height / 3), (width, height / 3), 7)
     pg.draw.line(screen, black, (width / 3 * 2 + 10, height / 3 * 2), (width, height / 3 * 2), 7)
+
+
+
     draw_status() 
 
 def draw_status():
@@ -418,11 +560,18 @@ def draw_status():
     # ((left, top), (width, height))
     screen.fill ((0, 0, 0), (0, height, width, 100)) 
     text_rect = text.get_rect(center =(width / 2, 500-50)) 
-    screen.blit(text, text_rect) 
+    screen.blit(text, text_rect)
+
+    add_text("Top", 20, width / 6 * 1 - 40, height + 5)
+    add_text("Center", 20, width / 6 * 3 - 40, height + 5)
+    add_text("bottom", 20, width / 6 * 5 - 40, height + 5)
+
     pg.display.update() 
 
-def check_win():
-    global board, winner, draw 
+def check_win(tutorial=False):
+    global board, winner, draw
+
+    winner = ""
 
     #checking on different boards
     for x in range(3):
@@ -522,8 +671,9 @@ def check_win():
                     draw = None
                     break
 
-
-    draw_status() 
+    if tutorial == False:
+        draw_status()
+    return winner
 
 def drawXO(row, col):
     global board, XO 
@@ -546,20 +696,16 @@ def drawXO(row, col):
     if board[x][row][col] is None:
         board[x][row][col] = XO
     
-        if(XO == 'x'): 
-            # pasting x_img over the screen
-            # at a coordinate position of
-            # (pos_y, posx) defined in the
-            # above code
+        #drawing and turning
+        if XO == 'x': 
             screen.blit(x_img, (posy, posx)) 
             XO = 'o'
-        
         else: 
             screen.blit(o_img, (posy, posx))
             XO = 'x'
     pg.display.update()
 
-def user_click():
+def user_click(check=True):
     # get coordinates of mouse click 
     x, y = pg.mouse.get_pos()
 
@@ -571,11 +717,13 @@ def user_click():
         col = math.floor(x / sizex)
         row = math.floor(y / sizey)
     
-        #drawing and cheking win
+        #drawing and checking win
         global XO
         drawXO(row, col)
-        check_win()
+        if check:
+            check_win()
         return str(row) + "|" + str(col)
+
     return None
 
 def reset_game():
