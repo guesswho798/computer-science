@@ -17,7 +17,7 @@ background = (34, 34, 51)
 foreground = (170, 204, 255)
 server = True
 ip = ""
-port = 55555
+port = 0
 name = "Raz"
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 opponent_name = ""
@@ -573,9 +573,8 @@ def options():
     text_ip = ip
     text_name = name
     if port == 0 and server == True:
-        #change this back later
-        #text_port = str(random.randint(10000,60000))
-        text_port = "55555"
+        text_port = str(random.randint(10000,60000))
+        text_port = ""
     elif port == 0 and server == False:
         text_port = ""
     else:
@@ -600,8 +599,8 @@ def options():
                     text_port = str(random.randint(10000,60000))
                 elif abs(x - width / 10 * 2.4) < 55 and y > height / 7 * 2 and y < height / 7 * 3:
                     server = False
-                    text_ip = "127.0.0.1"
-                    text_port = "55555"
+                    text_ip = ""
+                    text_port = ""
                 elif abs(x - width / 10 * 1.4) < 55 and y > height / 7 * 7 and y < height / 7 * 8:
                     done = True
 
@@ -785,7 +784,7 @@ def menu():
 def main():
 
     pg.mixer.music.set_volume(0.01)
-    #pg.mixer.music.play(-1)
+    pg.mixer.music.play(-1)
 
     while True:
         play = menu()
