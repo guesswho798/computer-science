@@ -28,7 +28,7 @@ last_move = ""
 rcv = False
 win = 0
 lose = 0
-
+music = True
 
 # setting up a 3 * 3 * 3 board
 board = [[[None]*3, [None]*3, [None]*3], [[None]*3, [None]*3, [None]*3], [[None]*3, [None]*3, [None]*3]]
@@ -39,6 +39,7 @@ fps = 60
 CLOCK = pg.time.Clock()
 screen = pg.display.set_mode((width, height + 100), 0, 32)
 pg.display.set_caption("3D multiplayer X's and O's")
+pg.mixer.music.load("TR.wav")
 
 # loading the images as python object
 x_img = pg.image.load("x.jpg")
@@ -353,11 +354,13 @@ def tutorial():
         CLOCK.tick(fps)
 
 def options():
-    global server, name, ip, port
+    global server, name, ip, port, music
 
     input_box_name = pg.Rect(width / 10 * 1.8, height / 7 * 3 + 10, 300, 30)
     input_box_ip = pg.Rect(width / 10 * 1.4, height / 7 * 4 + 10, 300, 30)
     input_box_port = pg.Rect(width / 10 * 1.8, height / 7 * 5 + 10, 300, 30)
+    music_on = pg.Rect(width / 10 + 95, height / 7 * 6 + 3, 50, 38)
+    music_off = pg.Rect(width / 10 + 155, height / 7 * 6 + 3, 65, 40)
     font = pg.font.Font(None, 32)
     color_inactive = black
     color_active = white
@@ -399,7 +402,7 @@ def options():
                     server = False
                     text_ip = "127.0.0.1"
                     text_port = "55555"
-                elif abs(x - width / 10 * 1.4) < 55 and y > height / 7 * 6 and y < height / 7 * 7:
+                elif abs(x - width / 10 * 1.4) < 55 and y > height / 7 * 7 and y < height / 7 * 8:
                     done = True
 
                 # ip box collider
@@ -434,6 +437,13 @@ def options():
                     name = text_name
                 # Change color
                 color_name = color_active if active_name else color_inactive
+
+                if music_on.collidepoint(event.pos):
+                    music = True
+                    pg.mixer.music.play(-1)
+                if music_off.collidepoint(event.pos):
+                    music = False
+                    pg.mixer.music.fadeout(1000)
             elif event.type == pg.KEYDOWN:
                 if active_ip:
                     if event.key == pg.K_RETURN:
@@ -473,7 +483,8 @@ def options():
         str4 = "Name: "
         str5 = "IP: "
         str6 = "PORT: "
-        str7 = "Back"
+        str7 = "music"
+        str8 = "Back"
 
         add_text(str1, 30, width / 10, height / 7 * 1, foreground)
         add_text(str2, 30, width / 10, height / 7 * 2, foreground)
@@ -486,6 +497,13 @@ def options():
         add_text(str5, 30, width / 10, height / 7 * 4, foreground)
         add_text(str6, 30, width / 10, height / 7 * 5, foreground)
         add_text(str7, 30, width / 10, height / 7 * 6, foreground)
+        add_text("On", 30, width / 10 + 100, height / 7 * 6, foreground)
+        add_text("Off", 30, width / 10 + 160, height / 7 * 6, foreground)
+        if music:
+            pg.draw.rect(screen, black, ((width / 10 + 95, height / 7 * 6 + 3), (50, 38)), 4)
+        else:
+            pg.draw.rect(screen, black, ((width / 10 + 155, height / 7 * 6 + 3), (65, 40)), 4)
+        add_text(str8, 30, width / 10, height / 7 * 7, foreground)
 
         # Render the current text.
         txt_surface_ip = font.render(text_ip, True, color_ip)
@@ -539,11 +557,11 @@ def draw_status():
     
     # getting the global variable draw 
     # into action 
-    global draw 
+    global draw, winner
     
     if winner is None:
         message = XO.upper() + "'s Turn"
-    elif draw is None:
+    elif draw is None and winner is not None:
         message = winner.upper() + " won!"
     else: 
         message = "Game Draw!"
@@ -571,7 +589,6 @@ def draw_status():
 def check_win(tutorial=False):
     global board, winner, draw
 
-    winner = ""
 
     #checking on different boards
     for x in range(3):
@@ -620,7 +637,7 @@ def check_win(tutorial=False):
                 screen.blit(circle_img, (30 + 133 * col + 400 * 1, 30 + 133 * row))
                 screen.blit(circle_img, (30 + 133 * col + 400 * 2, 30 + 133 * row))
 
-    #these two is for the diagonal
+    #these four are for the 3d diagonal
     if (board[0][0][0] == board[1][1][1] == board[2][2][2]) and (board[0][0][0] is not None):
         winner = board[0][0][0]
         screen.blit(circle_img, (30, 30))
@@ -631,6 +648,16 @@ def check_win(tutorial=False):
         screen.blit(circle_img, (30, 296))
         screen.blit(circle_img, (563, 163))
         screen.blit(circle_img, (1096, 30))
+    if (board[0][0][2] == board[1][1][1] == board[2][2][0]) and (board[0][0][2] is not None):
+        winner = board[0][0][2]
+        screen.blit(circle_img, (30 + 133 * 2, 30))
+        screen.blit(circle_img, (30 + 133 * 1 + 400 * 1, 30 + 133 * 1))
+        screen.blit(circle_img, (30 + 133 * 0 + 400 * 2, 30 + 133 * 2))
+    if (board[0][2][2] == board[1][1][1] == board[2][0][0]) and (board[2][0][0] is not None):
+        winner = board[2][0][0]
+        screen.blit(circle_img, (30 + 133 * 2, 30 + 133 * 2))
+        screen.blit(circle_img, (30 + 133 * 1 + 400 * 1, 30 + 133 * 1))
+        screen.blit(circle_img, (30 + 133 * 0 + 400 * 2, 30 + 133 * 0))
 
     #rows
     for row in range(3):
@@ -731,12 +758,14 @@ def reset_game():
     time.sleep(2)
     XO = 'x'
     draw = None
-    game_initiating_window()
     winner = None
     board = [[[None]*3, [None]*3, [None]*3], [[None]*3, [None]*3, [None]*3], [[None]*3, [None]*3, [None]*3]]
+    game_initiating_window()
 
 def main():
 
+    pg.mixer.music.set_volume(0.01)
+    pg.mixer.music.play(-1)
     play = menu()
 
     if play == "online":
