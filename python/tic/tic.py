@@ -18,7 +18,7 @@ foreground = (170, 204, 255)
 server = True
 ip = ""
 port = 0
-name = "Raz"
+name = ""
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 opponent_name = ""
 client = None
@@ -284,7 +284,7 @@ def draw_status():
         message = "Game Draw!"
 
     # setting a font object
-    font = pg.font.Font(None, 30)
+    font = pg.font.SysFont("comicsansms", 28)
     
     # setting the font properties like 
     # color and width of the text 
@@ -561,7 +561,7 @@ def options():
     input_box_port = pg.Rect(width / 10 * 1.8, height / 7 * 5 + 10, 300, 30)
     music_on = pg.Rect(width / 10 + 95, height / 7 * 6 + 3, 50, 38)
     music_off = pg.Rect(width / 10 + 155, height / 7 * 6 + 3, 65, 40)
-    font = pg.font.Font(None, 32)
+    font = pg.font.SysFont("comicsansms", 28)
     color_inactive = black
     color_active = white
     color_ip = color_inactive
@@ -709,9 +709,9 @@ def options():
         txt_surface_port = font.render(text_port, True, color_port)
         txt_surface_name = font.render(text_name, True, color_name)
         # Blit the text.
-        screen.blit(txt_surface_ip, (input_box_ip.x+5, input_box_ip.y+5))
-        screen.blit(txt_surface_port, (input_box_port.x+5, input_box_port.y+5))
-        screen.blit(txt_surface_name, (input_box_name.x+5, input_box_name.y+5))
+        screen.blit(txt_surface_ip, (input_box_ip.x+5, input_box_ip.y-5))
+        screen.blit(txt_surface_port, (input_box_port.x+5, input_box_port.y-5))
+        screen.blit(txt_surface_name, (input_box_name.x+5, input_box_name.y-5))
         # Blit the input_box rect.
         pg.draw.rect(screen, color_ip, input_box_ip, 2)
         pg.draw.rect(screen, color_port, input_box_port, 2)
