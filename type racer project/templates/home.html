@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Type Racer</title>
+      <link rel="stylesheet" href="{{ url_for('static',     filename='css/lobby.css') }}">
+      <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+      <script type="text/javascript" charset="utf-8">
+
+         // socket
+         var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+         // listener function to log everything the server sends
+         socket.on('listener', function(data) {
+            console.log(data);});
+
+         // joining a waiting room
+         function func(number){
+            window.location.href = "/waiting/" + number;
+            return false;
+         };
+      </script>
+   </head>
+   <body>
+      <h1>Type Racer</h1>
+      <p>Welcome to <em>Type Racer</em>, here you can practice in the Endless Pratice section</p>
+      <p>to warm up and start playing right away.</p>
+      <div class="outer-grid-container">
+         <div class="Friend">
+            <h4>Friend List</h4>
+            <ul>
+               <li>Friend 1</li>
+               <li>Friend 2</li>
+               <li>Friend 3</li>
+            </ul>
+         </div> 
+         <div class="inner-grid-container">
+            <div class="inner-grid-item" onclick="func('2z')" style="cursor: pointer">1V1<br>Blitz</div>
+            <div class="inner-grid-item" onclick="func('3z')" style="cursor: pointer">1V1V1<br>Blitz</div>
+            <div class="inner-grid-item" onclick="func('4z')" style="cursor: pointer">B. Royale<br>Blitz</div>
+            <div class="inner-grid-item" onclick="func('1r')" style="cursor: pointer">1V1<br>Rapid</div>
+            <div class="inner-grid-item" onclick="func('2r')" style="cursor: pointer">1V1V1<br>Rapid</div>
+            <div class="inner-grid-item" onclick="func('3r')" style="cursor: pointer">B. Royale<br>Rapid</div>
+            <div class="inner-grid-item" onclick="func('1c')" style="cursor: pointer">1V1<br>Classical</div>
+            <div class="inner-grid-item" onclick="func('2c')" style="cursor: pointer">1V1V1<br>Classical</div>
+            <div class="inner-grid-item" onclick="func('3c')" style="cursor: pointer">B. Royale<br>Classical</div>
+            <div class="inner-grid-item" onclick="func('add later')" style="cursor: pointer">Endless<br>Practice</div>
+            <div class="inner-grid-item" onclick="func('add later')" style="cursor: pointer">Custom<br>Game</div>
+            <div class="inner-grid-item" id="yellow">Type<br>Racer</div>
+         </div>
+         <div class="Item3">
+            <h4>The Daily Riddle</h4>
+            <p>What has to be broken before you can use it?</p>
+         </div>
+      </div>
+   </body>
+</html>

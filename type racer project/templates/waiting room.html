@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static',     filename='css/waiting room.css') }}">
+  	<title>Waiting Room</title>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+  	<script>
+
+      function codeAddress(){
+        // adding elements
+        var p = document.getElementById("racer");
+        var h = document.createElement("h1");
+        var w = document.createElement("p");
+        var g = document.createElement("p");
+        var t = document.createElement("input");
+
+        w.setAttribute('id', "white");
+        g.setAttribute('id', "green");
+        t.setAttribute('id', "t");
+
+        h.innerHTML = "Type Racer";
+        w.innerHTML = "Type white";
+        g.innerHTML = "Type green";
+
+        p.appendChild(h);
+        p.appendChild(g);
+        p.appendChild(w);
+        p.appendChild(t);
+
+        // removing waiting room
+        var element = document.getElementByClass("container");
+        element.parentNode.removeChild(element);
+      }
+
+      var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+      socket.on('connect', function() {
+        socket.emit('join', {'username': "user_name!", "room name": window.location.pathname.slice(9)});
+      });
+      
+      // listener function to log everything the server sends
+      socket.on('listener', function(data) {
+        console.log(data);});
+    </script>
+</head>
+<body onload="codeAddress();">
+	<a href="{{ url_for('game') }}"><h1>Waiting In Room {{ID}}</h1></a>
+	<div class="container">
+  		<div class="box1"></div>
+  		<div class="box2"></div>
+  		<div class="box3"></div>
+	</div>
+
+  <div id="racer">
+  </div>
+</body>
+</html>
