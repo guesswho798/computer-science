@@ -15,9 +15,11 @@
 
          // joining a waiting room
          function func(number){
-            window.location.href = "/waiting/" + number;
-            return false;
-         };
+            if(number == "guess")
+               window.location.href = "https://guesswho798.github.io/";
+            else
+               window.location.href = "/waiting/" + number;};
+            
       </script>
    </head>
    <body>
@@ -37,15 +39,15 @@
             <div class="inner-grid-item" onclick="func('2z')" style="cursor: pointer">1V1<br>Blitz</div>
             <div class="inner-grid-item" onclick="func('3z')" style="cursor: pointer">1V1V1<br>Blitz</div>
             <div class="inner-grid-item" onclick="func('4z')" style="cursor: pointer">B. Royale<br>Blitz</div>
-            <div class="inner-grid-item" onclick="func('1r')" style="cursor: pointer">1V1<br>Rapid</div>
-            <div class="inner-grid-item" onclick="func('2r')" style="cursor: pointer">1V1V1<br>Rapid</div>
-            <div class="inner-grid-item" onclick="func('3r')" style="cursor: pointer">B. Royale<br>Rapid</div>
-            <div class="inner-grid-item" onclick="func('1c')" style="cursor: pointer">1V1<br>Classical</div>
-            <div class="inner-grid-item" onclick="func('2c')" style="cursor: pointer">1V1V1<br>Classical</div>
-            <div class="inner-grid-item" onclick="func('3c')" style="cursor: pointer">B. Royale<br>Classical</div>
+            <div class="inner-grid-item" onclick="func('2r')" style="cursor: pointer">1V1<br>Rapid</div>
+            <div class="inner-grid-item" onclick="func('3r')" style="cursor: pointer">1V1V1<br>Rapid</div>
+            <div class="inner-grid-item" onclick="func('4r')" style="cursor: pointer">B. Royale<br>Rapid</div>
+            <div class="inner-grid-item" onclick="func('2c')" style="cursor: pointer">1V1<br>Classical</div>
+            <div class="inner-grid-item" onclick="func('3c')" style="cursor: pointer">1V1V1<br>Classical</div>
+            <div class="inner-grid-item" onclick="func('4c')" style="cursor: pointer">B. Royale<br>Classical</div>
             <div class="inner-grid-item" onclick="func('add later')" style="cursor: pointer">Endless<br>Practice</div>
             <div class="inner-grid-item" onclick="func('add later')" style="cursor: pointer">Custom<br>Game</div>
-            <div class="inner-grid-item" id="yellow">Type<br>Racer</div>
+            <div class="inner-grid-item" id="yellow" onclick="func('guess')">Type<br>Racer</div>
          </div>
          <div class="Item3">
             <h4>The Daily Riddle</h4>
