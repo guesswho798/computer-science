@@ -2,7 +2,7 @@
 <html>
    <head>
       <title>Type Racer</title>
-      <link rel="stylesheet" href="{{ url_for('static',     filename='css/lobby.css') }}">
+      <link rel="stylesheet" href="{{ url_for('static', filename='css/lobby.css') }}">
       <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
       <script type="text/javascript" charset="utf-8">
 
@@ -23,16 +23,28 @@
       </script>
    </head>
    <body>
+      <ul id="nav">
+         <li id="nav-item"><a href="{{ url_for('about') }}" id="nav-a">About</a></li>
+         {% if username %}
+            <li id="nav-item"><a href="{{ url_for('logout') }}" id="nav-a">Logout</a></li>
+            <li id="nav-item"><a href="{{ url_for('profile') }}" id="nav-a">{{username}}</a></li>
+         {% else %}
+            <li id="nav-item"><a href="{{ url_for('profile') }}" id="nav-a">Login</a></li>
+            <li id="nav-item"><a href="{{ url_for('signup') }}" id="nav-a">Signup</a></li>
+         {% endif %}
+         <li id="nav-item"><a href="#" id="nav-a">Home</a></li>
+      </ul>
+      <br><br>
       <h1>Type Racer</h1>
       <p>Welcome to <em>Type Racer</em>, here you can practice in the Endless Pratice section</p>
-      <p>to warm up and start playing right away.</p>
+      <p>to warm up and start playing right away with other users.</p>
       <div class="outer-grid-container">
          <div class="Friend">
-            <h4>Friend List</h4>
+            <h4>Score Board</h4>
             <ul>
-               <li>Friend 1</li>
-               <li>Friend 2</li>
-               <li>Friend 3</li>
+               <li>User 1</li>
+               <li>User 2</li>
+               <li>User 3</li>
             </ul>
          </div> 
          <div class="inner-grid-container">
@@ -46,7 +58,7 @@
             <div class="inner-grid-item" onclick="func('3c')" style="cursor: pointer">1V1V1<br>Classical</div>
             <div class="inner-grid-item" onclick="func('4c')" style="cursor: pointer">B. Royale<br>Classical</div>
             <div class="inner-grid-item" onclick="func('add later')" style="cursor: pointer">Endless<br>Practice</div>
-            <div class="inner-grid-item" onclick="func('add later')" style="cursor: pointer">Custom<br>Game</div>
+            <div class="inner-grid-item" onclick="func('add later')" style="cursor: pointer">Private<br>Match</div>
             <div class="inner-grid-item" id="yellow" onclick="func('guess')">Type<br>Racer</div>
          </div>
          <div class="Item3">

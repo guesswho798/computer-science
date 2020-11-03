@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/game.css') }}">
+  	<title>Type Racer</title>
+    
+</head>
+<body>
+  <div id="wait">
+	 <div id="container">
+  	<div id="box1"></div>
+  	<div id="box2"></div>
+		<div id="box3"></div>
+	 </div>
+   <br>
+   <h1>Waiting...</h1>
+  </div>
+
+  <div id="racerw">
+  </div>
+</body>
+  <head>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+    <script>
+
+      var socket = io.connect('http://' + document.domain + ':' + location.port);
+      var play = false;
+      var selector = 0;
+      var opponentSelector = {};
+      var sentence = "";
+      var username = Math.floor(Math.random() * 1001).toString();
+      var t0 = null;
+
+      socket.on('connect', function() {
+        socket.emit('join', {'username': username, "room name": window.location.pathname.slice(9)});
+      });
+      
+      socket.on('selector sender', function(data) {
+        if (data['username'] != username) {
+          if (opponentSelector[data['username']] == null) {
+            opponentSelector[data['username']] = 1;
+            if (document.getElementById('car2') != null)
+              document.getElementById('car2').setAttribute('id', data['username']);
+            else if (document.getElementById('car3') != null)
+              document.getElementById('car3').setAttribute('id', data['username']);
+            else if (document.getElementById('car4') != null)
+              document.getElementById('car4').setAttribute('id', data['username']);
+          }
+          else{
+          opponentSelector[data['username']] = opponentSelector[data['username']] + 1;
+          }
+          document.getElementById(data['username']).style.margin = '0 0 0 ' + 90*opponentSelector[data['username']]/sentence.split(' ').length+'%';
+        }
+      });
+
+      // listener function to log everything the server sends
+      socket.on('listener', function(data) {
+
+        console.log(data);
+        
+        if (data.length > 10){
+
+
+          // starting to count time to calculate time
+          t0 = performance.now();
+
+          play = true;
+
+          // adding elements
+          var p = document.getElementById("racerw");
+          var h = document.createElement("h1");
+
+          var img1 = document.createElement('img');
+          var b1 = document.createElement("br");
+          var b2 = document.createElement("br");
+          var img2 = document.createElement('img');
+          var b3 = document.createElement("br");
+          var b4 = document.createElement("br");
+          if (window.location.pathname.slice(9,10) == "3") {
+            var img3 = document.createElement('img');
+            var b7 = document.createElement("br");
+            var b8 = document.createElement("br");
+          }
+          if (window.location.pathname.slice(9,10) == "4") {
+            var img3 = document.createElement('img');
+            var b7 = document.createElement("br");
+            var b8 = document.createElement("br");
+            var img4 = document.createElement('img');
+            var b9 = document.createElement("br");
+            var b10 = document.createElement("br");
+          }
+          var b5 = document.createElement("br");
+          var w = document.createElement("p");
+          var g = document.createElement("p");
+          var b6 = document.createElement("br");
+          var t = document.createElement("input");
+
+          // setting ids
+          p.setAttribute('id', "racer");
+          img1.setAttribute('id', "car1");
+          img1.src = "{{ url_for('static', filename='images/car.png') }}";
+          img1.style.width = '40px';
+          img1.style.height = '40px';
+          img2.setAttribute('id', "car2");
+          img2.src = "{{ url_for('static', filename='images/car.png') }}";
+          img2.style.width = '40px';
+          img2.style.height = '40px';
+          if (window.location.pathname.slice(9,10) == "3") {
+            img3.setAttribute('id', "car3");
+            img3.src = "{{ url_for('static', filename='images/car.png') }}";
+            img3.style.width = '40px';
+            img3.style.height = '40px';
+          }
+          if (window.location.pathname.slice(9,10) == "4") {
+            img3.setAttribute('id', "car3");
+            img3.src = "{{ url_for('static', filename='images/car.png') }}";
+            img3.style.width = '40px';
+            img3.style.height = '40px';
+            img4.setAttribute('id', "car4");
+            img4.src = "{{ url_for('static', filename='images/car.png') }}";
+            img4.style.width = '40px';
+            img4.style.height = '40px';
+          }
+          w.setAttribute('id', "white");
+          g.setAttribute('id', "green");
+          t.setAttribute('id', "t");
+  
+          // setting values
+          h.innerHTML = "Type Racer";
+          w.innerHTML = data.slice(4);
+          sentence = data.slice(4);
+          g.innerHTML = "";
+    
+          // adding to div
+          p.appendChild(h);
+          p.appendChild(img1);
+          p.appendChild(b1);
+          p.appendChild(b2);
+          p.appendChild(img2);
+          p.appendChild(b3);
+          p.appendChild(b4);
+          if (window.location.pathname.slice(9,10) == "3") {
+            p.appendChild(img3);
+            p.appendChild(b7);
+            p.appendChild(b8);
+          }
+          if (window.location.pathname.slice(9,10) == "4") {
+            p.appendChild(img3);
+            p.appendChild(b7);
+            p.appendChild(b8);
+            p.appendChild(img4);
+            p.appendChild(b9);
+            p.appendChild(b10);
+          }
+          p.appendChild(b5);
+          p.appendChild(g);
+          p.appendChild(w);
+          p.appendChild(b6);
+          p.appendChild(t);
+
+          document.getElementById('t').focus();
+
+          // get elements
+          var parent = document.getElementById("wait");
+
+          // Delete elements
+          parent.remove();
+        }
+      });
+
+
+setInterval(function () {
+  if(play == false)
+    return;
+
+  if (document.getElementById("t").value == " ") {
+    document.getElementById("t").value = '';
+  }
+
+  // cheking each letter and letting the user know he made a mistake
+  if (document.getElementById("t").value.length != 0)
+    if (sentence.split(' ')[selector].slice(0, document.getElementById("t").value.length) != document.getElementById("t").value)
+      document.getElementById("t").style.backgroundColor = "red";
+    else
+      document.getElementById("t").style.backgroundColor = "white";
+  else
+    document.getElementById("t").style.backgroundColor = "white";
+}, 1);
+
+document.body.onkeypress = function (e) {
+
+  // checking answer after the space bar is pressed
+  if (e.keyCode == 32 && play == true) {
+    check_Word(t);
+  }
+}
+
+function check_Word(t) {
+
+  var input_box = document.getElementById("t");
+
+  // checking if the input is the same as the focused word
+  if (input_box.value == sentence.split(' ')[selector]) {
+
+    // advancing the word selector
+    selector = selector + 1;
+    // sending server information
+    socket.emit('selector', {'username': username, "room name": window.location.pathname.slice(9)});
+
+    //console.log(selector / sentence.split(' ').length);
+    document.getElementById('car1').style.margin = '0 0 0 ' + 90*selector/sentence.split(' ').length+'%';
+    // clearing the input bar
+    input_box.value = '';
+
+    // the sentence diplayed is splited into two elements,
+    // the first one is green displaying all the words that were written all ready
+    // and the second one is displaying the rest of the sentece in white.
+    document.getElementById("green").innerHTML = "";
+    document.getElementById("white").innerHTML = "";
+    var s3 = sentence.split(' ');
+    for (var i = 0; i < s3.length; i++)
+      if (i < selector)
+        document.getElementById("green").innerHTML += s3[i] + " ";
+      else
+        document.getElementById("white").innerHTML += s3[i] + " ";
+  }
+
+  // disabling input box if sentence is done
+  if (selector == sentence.split(' ').length) {
+    input_box.style.backgroundColor = "white";
+    input_box.disabled = true;
+
+    // calculating time
+
+    var totalTime = sentence.split(' ').length/(Math.floor((performance.now() - t0)/1000)/60);
+    socket.emit('finish', {"wpm":totalTime});
+    window.location.href="{{ url_for('home') }}";
+  }
+}
+
+    </script>
+  </head>
+</html>

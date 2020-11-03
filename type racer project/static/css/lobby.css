@@ -59,3 +59,30 @@ h1, h4 {
   background-color: #ffcf40;
   color: #262421;
 }
+
+#nav {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+#nav-item {
+  display: inline;
+  float: right;
+}
+
+#nav-a {
+  text-decoration: none;
+  color: #738282;
+  display: block;
+  padding: 8px;
+  -webkit-transition: color 0.5s;
+  -moz-transition:    color 0.5s;
+  -ms-transition:     color 0.5s;
+  -o-transition:      color 0.5s;
+  transition:         color 0.5s;
+}
+
+#nav-a:hover {
+  color: #ffffff;
+}

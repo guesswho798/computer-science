@@ -1,15 +1,54 @@
 from flask import Flask, redirect, render_template, url_for, session
 from flask_socketio import SocketIO, send, emit, join_room, leave_room, close_room, rooms, disconnect
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, BooleanField
+from wtforms.validators import InputRequired, Email, Length
+from werkzeug.security import generate_password_hash, check_password_hash
 import random
 
+
 app = Flask(__name__)
-app.config['SECRET_KEY'] = "secret!"
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SECRET_KEY'] = "gnli^sd*bfl!ids#dbfl@dsf"
 socketio = SocketIO(app)
+db = SQLAlchemy(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
 
 r = {"2z":0 ,"3z":0 ,"4z":0 ,"2r":0 ,"3r":0, "4r":0 ,"2c":0 ,"3c":0, "4c":0}
 
+class LoginForm(FlaskForm):
+	username = StringField('username', validators=[InputRequired(), Length(min=4, max=15)])
+	password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
+	remember = BooleanField('remember me')
+
+class RegisterForm(FlaskForm):
+	email = StringField('email', validators=[InputRequired(), Email(message='invalid email'), Length(max=50)])
+	username = StringField('username', validators=[InputRequired(), Length(min=4, max=15)])
+	password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
+
+class User(UserMixin, db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	username = db.Column(db.String(15), unique=True)
+	email = db.Column(db.String(50), unique=True)
+	password = db.Column(db.String(80))
+	wpm = db.Column(db.String(80))
+	total = db.Column(db.Integer)
+	average = db.Column(db.Integer)
+
+
+@login_manager.user_loader
+def load_user(user_id):
+	return User.query.get(int(user_id))
+
 @app.route("/")
 def home():
+	if current_user.is_authenticated:
+		return render_template("home.html", username=current_user.username)
 	return render_template("home.html")
 
 @app.route('/about')
@@ -33,12 +72,15 @@ def on_join(data):
 		r[room_name] = 0
 		socketio.emit("listener", "join" + get_sentence(room_name[1]), room=room_name)
 
+		
+
 @app.route("/waiting/<ID>")
+@login_required
 def waiting(ID):
 	if ID == "add later":
 		return "Not finished yet for upload!"
 
-	return render_template("waiting room.html", ID=ID)
+	return render_template("game.html", ID=ID)
 
 @socketio.on('selector')
 def connect(data):
@@ -47,9 +89,70 @@ def connect(data):
 
 	socketio.emit("selector sender", {'username':username}, room=room_name)
 
-@app.route("/game")
-def game():
-	return render_template("blitz.html")
+@socketio.on('finish')
+def finish(data):
+
+	wordsPerMinute = data['wpm']
+
+	newW = ""
+	if current_user.wpm == "":
+		newW = str(int(wordsPerMinute))
+	else:
+		newW = current_user.wpm + " " + str(int(wordsPerMinute))
+
+	numList = list(map(int, newW.split()))
+	avg = sum(numList)/len(numList)
+
+	newT = int(current_user.total) + 1
+
+
+	user = User.query.filter_by(username=current_user.username).first()
+
+	user.total = newT
+	user.wpm = newW
+	user.average = avg
+	db.session.commit()
+
+@app.route("/profile")
+@login_required
+def profile():
+	return render_template('profile.html', username=current_user.username, wpm=current_user.wpm, total=current_user.total, avg=int(current_user.average))
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+	form = LoginForm()
+
+	if form.validate_on_submit():
+		user = User.query.filter_by(username=form.username.data).first()
+		if user:
+			if check_password_hash(user.password, form.password.data):
+				login_user(user, remember=form.remember.data)
+				return redirect(url_for('home'))
+
+	return render_template('login.html', form=form)
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+	form = RegisterForm()
+
+	if form.validate_on_submit():
+
+		hashed_password = generate_password_hash(form.password.data, method='sha256')
+		new_user = User(username=form.username.data, email=form.email.data, password=hashed_password, wpm="", total=0)
+		db.session.add(new_user)
+		db.session.commit()
+		login_user(new_user)
+		db.session.commit()
+
+		return redirect(url_for('home'))
+
+	return render_template('signup.html', form=form)
+
+@app.route('/logout')
+@login_required
+def logout():
+	logout_user()
+	return redirect(url_for('home'))
 
 def get_sentence(mode):
 
@@ -69,8 +172,7 @@ def get_sentence(mode):
 		return "He appeared to be confusingly perplexed"
 
 	elif mode == 'r':
-		#n = random.randint(0, 4)
-		n = 3
+		n = random.randint(0, 4)
 
 		if n == 0:
 			return "As he crossed toward the pharmacy at the corner he involuntarily turned his head because of a burst of light that had ricocheted from his temple, and saw, with that quick smile with which we greet a rainbow or a rose, a blindingly white parallelogram of sky"
@@ -87,15 +189,15 @@ def get_sentence(mode):
 		n = random.randint(0, 4)
 
 		if n == 0:
-			return "Sometimes you have to just give up and win by cheating"
+			return "In the classical theory of gravity, which is based on real space-time, the universe can either have existed for an infinite time or else it had a beginning at a singularity at some finite time in the past, the latter possibility of which, in fact, the singularity theorems indicate, although the quantum theory of gravity, on the other hand, suggests a third possibility in which it is possible for space-time to be finite in extent and yet to have no singularities that formed a boundary or edge because one is using Euclidean space-times, in which the time direction is on the same footing as directions in space."
 		if n == 1:
-			return "All you need to do is pick up the pen and begin"
+			return "A computer memory is basically some device that can be in either one of two states, an example of which is a superconducting loop of wire where, if there is an electric current flowing in the loop, it will continue to flow because there is no resistance while, on the other hand, if there is no current, the loop will continue without a current two states of memory that can be labelled one and zero."
 		if n == 2:
-			return "Today arrived with a crash of my car through the garage door"
+			return "Before Darwin, American scientists typically accepted the biblically orthodox view that God directly created every type of species, with each thereafter reproducing true to form. In contrast, Darwin proposed that the interaction of several biological mechanisms naturally caused some descendants of older species gradually to evolve over countless generations into the ancestors of new species."
 		if n == 3:
-			return "As he entered the church he could hear the soft voice of someone whispering into a cell phone"
+			return "After a series of near misses and the imposition of lesser restrictions in several places, in 1925, Tennesee became the first state to outlaw evolutionary teaching. William Jennings Bryan, an attorney as well as a politician, took his crusade to the courtroom when the American Civil Liberties Union (ACLU) instigated a judicial challenge to the Tennessee statute. In the ensuing trial of science teacher John Scopes, Bryan successfully sparred with Clarence Darrow, who represented the defendant, over science, religion, and academic freedom."
 
-		return "He appeared to be confusingly perplexed"	
+		return "Typically, legislators showed greater responsiveness to popular opinion than judges, but even the courts operated within parameters established by popular sentiment, never allowing public science to deviate too far from popular opinion, a reconciliation in which both legislators and judges avoided ruling on the scientific merits of evolution or creation, which they typically viewed as being beyond the scope of their competence and based their decisions on non-scientific factors, such as the religious nature of creationism or the social ramifications of evolutionary teaching, inevitably influenced by scientific opinion only to the extent that opinion was distilled through popular opinion either directly in the acceptance of a theory of origins or indirectly in the cultural respect afforded science generally."	
 
 if __name__ == "__main__":
 	socketio.run(app, debug=True)
