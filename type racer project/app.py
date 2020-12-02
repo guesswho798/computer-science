@@ -19,7 +19,10 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
-r = {"2z":0 ,"3z":0 ,"4z":0 ,"2r":0 ,"3r":0, "4r":0 ,"2c":0 ,"3c":0, "4c":0}
+# dictionary to keep track of all the rooms
+# name          number of users active     room is playing    usernames connected to not allow the refresh
+# "room name": [0,                         False,             ["",""]]
+r = {}
 
 class LoginForm(FlaskForm):
 	username = StringField('username', validators=[InputRequired(), Length(min=4, max=15)])
@@ -65,22 +68,77 @@ def on_join(data):
 
 	username = data['username']
 	room_name = data['room name']
-	join_room(room_name)
 
-	r[room_name] = r[room_name] + 1
-	if r[room_name] == int(room_name[0]):
-		r[room_name] = 0
+	while(True):
+		# if the room exists
+		if room_name in r:
+			# if the room is waiting for players
+			if r[room_name][1] == False:
+				r[room_name][0] = r[room_name][0] + 1
+				join_room(room_name)
+				break
+			else:
+				# if the room is full and someone wants to join
+				# creating a new room with increasing counter name
+				if int(room_name[2:4]) + 1 < 10:
+					room_name = room_name[0:2] + "0" + str(int(room_name[2:4]) + 1)
+				else:
+					room_name = room_name[0:2] + str(int(room_name[2:4]) + 1)
+				if room_name not in r:
+					r[room_name] = [1, False]
+					join_room(room_name)
+					break
+		else:
+			# init room with one player
+			r[room_name] = [1, False]
+			join_room(room_name)
+			break
+	# if the room is full then the game starts
+	if r[room_name][0] == int(room_name[0]):
+		r[room_name][1] = True
+		join_room(room_name)
 		socketio.emit("listener", "join" + get_sentence(room_name[1]), room=room_name)
 
-		
+
 
 @app.route("/waiting/<ID>")
 @login_required
 def waiting(ID):
+
 	if ID == "add later":
 		return "Not finished yet for upload!"
 
 	return render_template("game.html", ID=ID)
+
+@socketio.on('get room')
+def get_room(data):
+	global r
+
+	room = data['room name']
+	#username = current_user.username
+
+
+	#if current_user.username not in r[room][2]:
+
+	#	r[room][2].append(current_user.username)
+
+	while(True):
+		if room in r:
+			if r[room][1] == False:
+				break
+			else:
+				if int(room[2:4]) + 1 < 10:
+					room = room[0:2] + "0" + str(int(room[2:4]) + 1)
+				else:
+					room = room[0:2] + str(int(room[2:4]) + 1)
+				if room not in r:
+					break
+		else:
+			break
+
+	socketio.emit("room asign", room)
+
+
 
 @socketio.on('selector')
 def connect(data):
@@ -93,6 +151,14 @@ def connect(data):
 def finish(data):
 
 	wordsPerMinute = data['wpm']
+	roomName = data['room name']
+
+	# decreasing the amount of players in room
+	leave_room(roomName)
+	r[roomName][0] = r[roomName][0] - 1
+	if r[roomName][0] == 0:
+		close_room(roomName)
+		del r[roomName]
 
 	newW = ""
 	if current_user.wpm == "":
