@@ -19,7 +19,7 @@ def main():
 		time.sleep(r)
 
 		try:
-			#killing that pice of shit
+			# killing task
 			os.system('taskkill /im chrome.exe')
 		except:
 			pass
