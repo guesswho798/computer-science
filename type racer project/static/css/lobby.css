@@ -43,12 +43,13 @@ body {
   text-align: center;
   background-image: linear-gradient(rgb(47,43,37) 0%, #161512 20%);
   color: #BABABA;
-  font-family: Impact, Charcoal, sans-serif;
+  font-family: Helvetica;
   webkit-user-select: none; /* Safari */        
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE10+/Edge */
   user-select: none; /* Standard */
 }
+
 h1, h4 {
   margin:0;
   color: #ffcf40;

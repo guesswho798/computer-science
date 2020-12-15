@@ -1,5 +1,11 @@
 <!DOCTYPE html>
 <html>
+<head>
+  <link rel="shortcut icon" href="/static/images/shuttle.ico" type="image/x-icon">
+  <title>Space Racer: Profile Page</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+</head>
    <body>
    	<ul id="nav">
          <li id="nav-item"><a href="{{ url_for('about') }}" id="nav-a">About</a></li>
@@ -18,9 +24,6 @@
     <p id="inv">{{wpm}}</p>
 </body>
 <head>
-  <title>Type Racer: Profile Page</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
-  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script type="text/javascript">
 
     var w = document.getElementById("inv").innerHTML.split(" ");

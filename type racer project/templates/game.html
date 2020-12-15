@@ -1,25 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="shortcut icon" href="/static/images/shuttle.ico" type="image/x-icon">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/game.css') }}">
-  	<title>Space Racer</title>
-    
+  	<title>Space Racer: In Game</title> 
 </head>
 <body>
+
+  <p id="username" hidden>{{username}}</p>
+
   <div id="wait">
-<div id='stars'></div>
-<div id='stars2'></div>
-<div id='stars3'></div>
-<div id='title'>
-  <span>
-    Waiting...
-  </span>
-</div>
+    <div id='stars'></div>
+    <div id='title'>
+    <span>Waiting...</span>
+    </div>
   </div>
+
   <div id="racerw">
     <div id="rnf"></div>
     <div id="rnb"></div>
   </div>
+
+
 </body>
   <head>
     <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
@@ -31,7 +33,7 @@
       var selector = 0;
       var opponentSelector = {};
       var sentence = "";
-      var username = Math.floor(Math.random() * 1001).toString();
+      var username = document.getElementById("username").innerHTML;
       var t0 = null;
 
       socket.on('connect', function() {
@@ -53,15 +55,22 @@
           opponentSelector[data['username']] = opponentSelector[data['username']] + 1;
           }
           document.getElementById(data['username']).style.margin = '0 0 0 ' + 90*opponentSelector[data['username']]/sentence.split(' ').length+'%';
+          //console.log(data['username'] + " | " + opponentSelector[data['username']]);
+        }
+
+        if (opponentSelector[data['username']] == sentence.split(' ').length) {
+          //console.log(data['username'] + " is done!");
         }
       });
 
       // listener function to log everything the server sends
       socket.on('listener', function(data) {
 
-        console.log(data);
+        //console.log(data);
         
         if (data.length > 10){
+
+          //console.log("Users: " + document.getElementById("users").innerHTML);
 
           var pictureName1 = "{{ url_for('static', filename='images/ships1.png') }}";
           var pictureName2 = "{{ url_for('static', filename='images/ships2.png') }}";
@@ -76,21 +85,21 @@
 
           // adding elements
           var p = document.getElementById("racerw");
-
-          // foreground
           var h = document.createElement("h1");
-
+          // spaceship 1 & 2
           var img1 = document.createElement('img');
           var b1 = document.createElement("br");
           var b2 = document.createElement("br");
           var img2 = document.createElement('img');
           var b3 = document.createElement("br");
           var b4 = document.createElement("br");
+          // spaceship 3
           if (window.location.pathname.slice(9,10) == "3") {
             var img3 = document.createElement('img');
             var b7 = document.createElement("br");
             var b8 = document.createElement("br");
           }
+          // spaceship 4
           if (window.location.pathname.slice(9,10) == "4") {
             var img3 = document.createElement('img');
             var b7 = document.createElement("br");
@@ -99,11 +108,15 @@
             var b9 = document.createElement("br");
             var b10 = document.createElement("br");
           }
+          // green and white text, input bar and exit button
           var b5 = document.createElement("br");
           var w = document.createElement("p");
           var g = document.createElement("p");
           var b6 = document.createElement("br");
           var t = document.createElement("input");
+          var b11 = document.createElement("br");
+          var back = document.createElement('div');
+
 
           // setting ids
           p.setAttribute('id', "racer");
@@ -134,12 +147,16 @@
           w.setAttribute('id', "white");
           g.setAttribute('id', "green");
           t.setAttribute('id', "t");
+          t.setAttribute('autocomplete', "off");
+          back.setAttribute('id', "back");
+          back.setAttribute('onclick', "back()");
   
           // setting values
           h.innerHTML = "Type Racer";
           w.innerHTML = data.slice(4);
           sentence = data.slice(4);
           g.innerHTML = "";
+          back.innerHTML = "abandon ship!";
       
 
           // background
@@ -176,6 +193,8 @@
           p.appendChild(w);
           p.appendChild(b6);
           p.appendChild(t);
+          p.appendChild(b11);
+          p.appendChild(back);
 
           // get elements
           var parent = document.getElementById("wait");
@@ -276,11 +295,23 @@ function check_Word(t) {
     input_box.disabled = true;
 
     // calculating time
-
     var totalTime = sentence.split(' ').length/(Math.floor((performance.now() - t0)/1000)/60);
     socket.emit('finish', {"wpm":totalTime, "room name": window.location.pathname.slice(9)});
-    window.location.href="{{ url_for('home') }}";
+    //window.location.href="{{ url_for('home') }}";
+
+    document.getElementById("rnb").remove();
+    document.getElementById("rnf").remove();
+    document.getElementById("t").remove();
+    document.getElementById("white").remove();
+    document.getElementById("back").innerHTML = "Back To Lobby";
+    play = false;
   }
+}
+
+function back(){
+  //alert("sending");
+  socket.emit('exit', {"room name": window.location.pathname.slice(9)});
+  window.location.href="{{ url_for('home') }}";
 }
 
     </script>

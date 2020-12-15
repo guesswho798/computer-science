@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template, url_for, session
+from flask import Flask, redirect, render_template, url_for, session, request
 from flask_socketio import SocketIO, send, emit, join_room, leave_room, close_room, rooms, disconnect
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
@@ -23,6 +23,7 @@ login_manager.login_view = 'login'
 # name          number of users active     room is playing    usernames connected to not allow the refresh
 # "room name": [0,                         False,             ["",""]]
 r = {}
+u = {}
 
 class LoginForm(FlaskForm):
 	username = StringField('username', validators=[InputRequired(), Length(min=4, max=15)])
@@ -50,9 +51,10 @@ def load_user(user_id):
 
 @app.route("/")
 def home():
+	top = User.query.order_by(User.average.desc()).limit(3)
 	if current_user.is_authenticated:
-		return render_template("home.html", username=current_user.username)
-	return render_template("home.html")
+		return render_template("home.html", username=current_user.username, f=top[0].username + ", " + str(int(top[0].average)) + " WPM", s=top[1].username + ", " + str(int(top[1].average)) + " WPM", t=top[2].username + ", " + str(int(top[2].average)) + " WPM")
+	return render_template("home.html", f=top[0].username + ", " + str(int(top[0].average)) + " WPM" , s=top[1].username + ", " + str(int(top[1].average)) + " WPM", t=top[2].username + ", " + str(int(top[2].average)) + " WPM")
 
 @app.route('/about')
 def about():
@@ -60,14 +62,23 @@ def about():
 
 @socketio.on('connect')
 def connect():
+	u[current_user.username] = request.sid
+	#print(u)
 	emit("listener", 'connected')
 
 @socketio.on('join')
 def on_join(data):
 	global r
 
-	username = data['username']
 	room_name = data['room name']
+	username = data['username']
+
+	#print("trying to join: " + request.sid)
+	#if request.sid != u[username]:
+	#	print(current_user.username + " is not allowed to join")
+	#	return
+
+	#print(current_user.username + " is joining " + room_name)
 
 	while(True):
 		# if the room exists
@@ -75,6 +86,7 @@ def on_join(data):
 			# if the room is waiting for players
 			if r[room_name][1] == False:
 				r[room_name][0] = r[room_name][0] + 1
+				r[room_name][2].append(str(current_user.username))
 				join_room(room_name)
 				break
 			else:
@@ -85,20 +97,22 @@ def on_join(data):
 				else:
 					room_name = room_name[0:2] + str(int(room_name[2:4]) + 1)
 				if room_name not in r:
-					r[room_name] = [1, False]
+					r[room_name] = [1, False, list()]
+					r[room_name][2].append(str(current_user.username))
 					join_room(room_name)
 					break
 		else:
 			# init room with one player
-			r[room_name] = [1, False]
+			r[room_name] = [1, False, list()]
+			r[room_name][2].append(str(current_user.username))
 			join_room(room_name)
 			break
 	# if the room is full then the game starts
 	if r[room_name][0] == int(room_name[0]):
 		r[room_name][1] = True
+		r[room_name][2].append(str(current_user.username))
 		join_room(room_name)
 		socketio.emit("listener", "join" + get_sentence(room_name[1]), room=room_name)
-
 
 
 @app.route("/waiting/<ID>")
@@ -108,19 +122,20 @@ def waiting(ID):
 	if ID == "add later":
 		return "Not finished yet for upload!"
 
-	return render_template("game.html", ID=ID)
+	return render_template("game.html", ID=ID, username=current_user.username)
 
 @socketio.on('get room')
 def get_room(data):
 	global r
 
 	room = data['room name']
-	#username = current_user.username
+	username = data['username']
 
+	#print("trying to get room: " + request.sid)
+	#print("trying to get room: " + username)
+	if request.sid != u[username]:
+		return
 
-	#if current_user.username not in r[room][2]:
-
-	#	r[room][2].append(current_user.username)
 
 	while(True):
 		if room in r:
@@ -135,9 +150,8 @@ def get_room(data):
 					break
 		else:
 			break
-
-	socketio.emit("room asign", room)
-
+	
+	socketio.emit("room asign", room, room=request.sid)
 
 
 @socketio.on('selector')
@@ -147,6 +161,15 @@ def connect(data):
 
 	socketio.emit("selector sender", {'username':username}, room=room_name)
 
+@socketio.on('exit')
+def exit(data):
+
+	roomName = data['room name']
+	#print(current_user.username + " is leaving room " + roomName)
+	leave_room(roomName)
+	#socketio.emit("listener", roomName, room=roomName)
+
+
 @socketio.on('finish')
 def finish(data):
 
@@ -154,26 +177,26 @@ def finish(data):
 	roomName = data['room name']
 
 	# decreasing the amount of players in room
-	leave_room(roomName)
+	#leave_room(roomName)
 	r[roomName][0] = r[roomName][0] - 1
 	if r[roomName][0] == 0:
 		close_room(roomName)
 		del r[roomName]
 
+	# adding score to player
 	newW = ""
 	if current_user.wpm == "":
 		newW = str(int(wordsPerMinute))
 	else:
 		newW = current_user.wpm + " " + str(int(wordsPerMinute))
 
+	# calculating new average and adding one to total races
 	numList = list(map(int, newW.split()))
 	avg = sum(numList)/len(numList)
-
 	newT = int(current_user.total) + 1
 
-
+	# adding new values to user
 	user = User.query.filter_by(username=current_user.username).first()
-
 	user.total = newT
 	user.wpm = newW
 	user.average = avg
