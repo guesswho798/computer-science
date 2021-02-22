@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 #global var
 user = "rolexdegree"
 wpm = list()
-x_values = 100
+x_values = 800
 pbar = ProgressBar(maxval=5)
 counter = 0
 pbar.start()
@@ -28,7 +28,7 @@ def get_list():
 	driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=options)
 
 	#opening the site
-	print('\n'*10)
+	print('\n'*30)
 	pbar.update(counter)
 	counter = counter + 1
 	driver.get(url)
@@ -42,7 +42,7 @@ def get_list():
 	for num in soup.findAll('td'):
 		if "WPM" in str(num):
 			m = m + 1
-	print('\n'*10)
+	print('\n'*30)
 	pbar.update(counter)
 	counter = counter + 1
 	
@@ -69,19 +69,19 @@ def get_list():
 
 	#getting the list backwards so reversing
 	wpm.reverse()
-	print('\n'*10)
+	print('\n'*30)
 	pbar.update(counter)
 	counter = counter + 1
 
 def show_graph():
 	global wpm, counter, pbar
 
-	print('\n'*10)
+	print('\n'*30)
 	pbar.update(counter)
 	plt.plot(wpm)
 	plt.ylabel('Words Per Minute')
 	plt.xlabel('Races')
-	print('\n'*10)
+	print('\n'*30)
 	pbar.finish()
 	plt.show()
 

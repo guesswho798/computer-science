@@ -70,7 +70,7 @@ def local_multiplayer():
             if event.type == QUIT:
                 pg.quit()
                 sys.exit()
-            elif event.type is MOUSEBUTTONDOWN:
+            elif event.type == MOUSEBUTTONDOWN:
                 if back.collidepoint(event.pos):
                     reset_game(False)
                     done = True
@@ -590,7 +590,7 @@ def options():
             if event.type == QUIT: 
                 pg.quit() 
                 sys.exit() 
-            elif event.type is MOUSEBUTTONDOWN: 
+            elif event.type == MOUSEBUTTONDOWN: 
                 x, y = pg.mouse.get_pos()
 
                 #if pressed in the center of the screen
@@ -731,7 +731,7 @@ def menu():
             if event.type == QUIT: 
                 pg.quit() 
                 sys.exit() 
-            elif event.type is MOUSEBUTTONDOWN: 
+            elif event.type == MOUSEBUTTONDOWN: 
                 x, y = pg.mouse.get_pos()
                 #if pressed in the center of the screen
                 if abs(x - width / 2) < 75:
