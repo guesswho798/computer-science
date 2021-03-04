@@ -55,7 +55,6 @@ def start():
 
 
 	pygame.display.set_caption('Draw')
-	pygame.display.toggle_fullscreen()
 
 def event():
 	global color
@@ -69,27 +68,27 @@ def event():
 
 		#mouse press
 		if pygame.mouse.get_pressed()[0]:
-			if pygame.mouse.get_pos()[1] > 100:
-				mouseToPixle(pygame.mouse.get_pos())
-			else:
-				mouseToUI(pygame.mouse.get_pos())
+			#if pygame.mouse.get_pos()[1] > 100:
+			mouseToPixle(pygame.mouse.get_pos())
+			#else:
+			#	mouseToUI(pygame.mouse.get_pos())
 
 		#keyboard press
 		if event.type == pygame.KEYDOWN:
-			if event.key == pygame.K_0:
-				color = 0
 			if event.key == pygame.K_1:
-				color = 1
+				color = BLACK
 			if event.key == pygame.K_2:
-				color = 2
+				color = WHITE
+			if event.key == pygame.K_3:
+				color = BLUE
 		
 		if event.type == pygame.KEYUP:
-			if event.key == pygame.K_0:
-				color = 0
 			if event.key == pygame.K_1:
-				color = 1
+				color = BLACK
 			if event.key == pygame.K_2:
-				color = 2
+				color = WHITE
+			if event.key == pygame.K_3:
+				color = BLUE
 
 def mouseToPixle(pos):
 	global color

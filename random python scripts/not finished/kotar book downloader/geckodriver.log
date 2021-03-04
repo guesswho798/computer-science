@@ -1,0 +1,178 @@
+1614868396362	geckodriver	INFO	Listening on 127.0.0.1:58240
+1614868399439	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\Raz\\AppData\\Local\\Temp\\rust_mozprofilevg2vAV"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614868400993	Marionette	INFO	Listening on port 58253
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614868401517	Marionette	WARN	TLS certificate errors will be ignored for this session
+1614868401528	Marionette	ERROR	[15] No reply from Marionette:Register
+JavaScript warning: https://cdn.cet.ac.il/libs/cet.editorManager/1.0/cetEditorManager.js, line 733: unreachable code after return statement
+JavaScript warning: https://school.kotar.cet.ac.il/ClientResourcesServingHandler.ashx?h=8579938751f1629ec0c271e140d744cb10662f99&t=javascript&minify=True, line 90: unreachable code after return statement
+JavaScript warning: https://school.kotar.cet.ac.il/ClientResourcesServingHandler.ashx?h=8579938751f1629ec0c271e140d744cb10662f99&t=javascript&minify=True, line 90: unreachable code after return statement
+1614868405219	Marionette	INFO	Stopped listening on port 58253
+1614868469075	geckodriver	INFO	Listening on 127.0.0.1:58357
+1614868472143	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\Raz\\AppData\\Local\\Temp\\rust_mozprofileYAdYAx"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614868473351	Marionette	INFO	Listening on port 58371
+1614868473681	Marionette	WARN	TLS certificate errors will be ignored for this session
+1614868473690	Marionette	ERROR	[15] No reply from Marionette:Register
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+JavaScript warning: https://cdn.cet.ac.il/libs/cet.editorManager/1.0/cetEditorManager.js, line 733: unreachable code after return statement
+JavaScript warning: https://school.kotar.cet.ac.il/ClientResourcesServingHandler.ashx?h=8579938751f1629ec0c271e140d744cb10662f99&t=javascript&minify=True, line 90: unreachable code after return statement
+JavaScript warning: https://school.kotar.cet.ac.il/ClientResourcesServingHandler.ashx?h=8579938751f1629ec0c271e140d744cb10662f99&t=javascript&minify=True, line 90: unreachable code after return statement
+1614868477525	Marionette	INFO	Stopped listening on port 58371
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+1614868801020	geckodriver	INFO	Listening on 127.0.0.1:58498
+1614868804098	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\Raz\\AppData\\Local\\Temp\\rust_mozprofiledwnRzX"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614868805357	Marionette	INFO	Listening on port 58509
+1614868805650	Marionette	WARN	TLS certificate errors will be ignored for this session
+1614868805660	Marionette	ERROR	[15] No reply from Marionette:Register
+JavaScript warning: https://cdn.cet.ac.il/libs/cet.editorManager/1.0/cetEditorManager.js, line 733: unreachable code after return statement
+JavaScript warning: https://school.kotar.cet.ac.il/ClientResourcesServingHandler.ashx?h=8579938751f1629ec0c271e140d744cb10662f99&t=javascript&minify=True, line 90: unreachable code after return statement
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+JavaScript warning: https://school.kotar.cet.ac.il/ClientResourcesServingHandler.ashx?h=8579938751f1629ec0c271e140d744cb10662f99&t=javascript&minify=True, line 90: unreachable code after return statement
+1614868824101	Marionette	INFO	Stopped listening on port 58509
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+1614868869951	geckodriver	INFO	Listening on 127.0.0.1:58616
+1614868872994	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\Raz\\AppData\\Local\\Temp\\rust_mozprofileY5f2TT"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614868874218	Marionette	INFO	Listening on port 58629
+1614868874556	Marionette	WARN	TLS certificate errors will be ignored for this session
+1614868874567	Marionette	ERROR	[15] No reply from Marionette:Register
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+JavaScript warning: https://cdn.cet.ac.il/libs/cet.editorManager/1.0/cetEditorManager.js, line 733: unreachable code after return statement
+JavaScript warning: https://school.kotar.cet.ac.il/ClientResourcesServingHandler.ashx?h=8579938751f1629ec0c271e140d744cb10662f99&t=javascript&minify=True, line 90: unreachable code after return statement
+JavaScript warning: https://school.kotar.cet.ac.il/ClientResourcesServingHandler.ashx?h=8579938751f1629ec0c271e140d744cb10662f99&t=javascript&minify=True, line 90: unreachable code after return statement
+1614868910689	Marionette	INFO	Stopped listening on port 58629
+1614868992664	geckodriver	INFO	Listening on 127.0.0.1:58757
+1614868995732	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\Raz\\AppData\\Local\\Temp\\rust_mozprofileZ4Fw0a"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614868996986	Marionette	INFO	Listening on port 58770
+1614868997284	Marionette	WARN	TLS certificate errors will be ignored for this session
+1614868997293	Marionette	ERROR	[15] No reply from Marionette:Register
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+JavaScript warning: https://cdn.cet.ac.il/libs/cet.editorManager/1.0/cetEditorManager.js, line 733: unreachable code after return statement
+JavaScript warning: https://school.kotar.cet.ac.il/ClientResourcesServingHandler.ashx?h=8579938751f1629ec0c271e140d744cb10662f99&t=javascript&minify=True, line 90: unreachable code after return statement
+JavaScript warning: https://school.kotar.cet.ac.il/ClientResourcesServingHandler.ashx?h=8579938751f1629ec0c271e140d744cb10662f99&t=javascript&minify=True, line 90: unreachable code after return statement
+1614869002910	Marionette	INFO	Stopped listening on port 58770
+JavaScript error: resource://activity-stream/lib/ASRouter.jsm, line 987: NS_ERROR_ILLEGAL_VALUE: Component returned failure code: 0x80070057 (NS_ERROR_ILLEGAL_VALUE) [nsIObserverService.removeObserver]
+[Parent 2180, IPC I/O Parent] WARNING: file /builds/worker/checkouts/gecko/ipc/chromium/src/base/process_util_win.cc:167
+1614869079305	geckodriver	INFO	Listening on 127.0.0.1:58885
+1614869082368	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\Raz\\AppData\\Local\\Temp\\rust_mozprofileE98u4Z"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614869083787	Marionette	INFO	Listening on port 58898
+1614869083916	Marionette	WARN	TLS certificate errors will be ignored for this session
+1614869083926	Marionette	ERROR	[15] No reply from Marionette:Register
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+JavaScript warning: https://cdn.cet.ac.il/libs/cet.editorManager/1.0/cetEditorManager.js, line 733: unreachable code after return statement
+JavaScript warning: https://school.kotar.cet.ac.il/ClientResourcesServingHandler.ashx?h=8579938751f1629ec0c271e140d744cb10662f99&t=javascript&minify=True, line 90: unreachable code after return statement
+JavaScript warning: https://school.kotar.cet.ac.il/ClientResourcesServingHandler.ashx?h=8579938751f1629ec0c271e140d744cb10662f99&t=javascript&minify=True, line 90: unreachable code after return statement
+1614869091946	Marionette	INFO	Stopped listening on port 58898
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+1614869429759	geckodriver	INFO	Listening on 127.0.0.1:62822
+1614869432838	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--headless" "--hide-scrollbars" "--disable-gpu" "-foreground" "-no-remote" "-profile" "C:\\Users\\Raz\\AppData\\Local\\Temp\\rust_mozprofile00Jccb"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614869433943	Marionette	INFO	Listening on port 62833
+1614869434381	Marionette	WARN	TLS certificate errors will be ignored for this session
+1614869434390	Marionette	ERROR	[15] No reply from Marionette:Register
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+JavaScript warning: https://cdn.cet.ac.il/libs/cet.editorManager/1.0/cetEditorManager.js, line 733: unreachable code after return statement
+JavaScript warning: https://school.kotar.cet.ac.il/ClientResourcesServingHandler.ashx?h=8579938751f1629ec0c271e140d744cb10662f99&t=javascript&minify=True, line 90: unreachable code after return statement
+JavaScript warning: https://school.kotar.cet.ac.il/ClientResourcesServingHandler.ashx?h=8579938751f1629ec0c271e140d744cb10662f99&t=javascript&minify=True, line 90: unreachable code after return statement
+console.log: WebExtensions: reset-default-search: No addons in our list are installed.
+ner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--headless" "--hide-scrollbars" "--disable-gpu" "-foreground" "-no-remote" "-profile" "C:\\Users\\Raz\\AppData\\Local\\Temp\\rust_mozprofileZRNjbd"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614869620090	Marionette	INFO	Listening on port 63030
+1614869620557	Marionette	WARN	TLS certificate errors will be ignored for this session
+1614869620567	Marionette	ERROR	[15] No reply from Marionette:Register
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+JavaScript warning: https://cdn.cet.ac.il/libs/cet.editorManager/1.0/cetEditorManager.js, line 733: unreachable code after return statement
+JavaScript warning: https://school.kotar.cet.ac.il/ClientResourcesServingHandler.ashx?h=8579938751f1629ec0c271e140d744cb10662f99&t=javascript&minify=True, line 90: unreachable code after return statement
+JavaScript warning: https://school.kotar.cet.ac.il/ClientResourcesServingHandler.ashx?h=8579938751f1629ec0c271e140d744cb10662f99&t=javascript&minify=True, line 90: unreachable code after return statement
+console.log: WebExtensions: reset-default-search: No addons in our list are installed.
+ner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--headless" "--hide-scrollbars" "--disable-gpu" "-foreground" "-no-remote" "-profile" "C:\\Users\\Raz\\AppData\\Local\\Temp\\rust_mozprofileABtxnM"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614869663251	Marionette	INFO	Listening on port 52849
+1614869663670	Marionette	WARN	TLS certificate errors will be ignored for this session
+1614869663681	Marionette	ERROR	[15] No reply from Marionette:Register
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+JavaScript warning: https://cdn.cet.ac.il/libs/cet.editorManager/1.0/cetEditorManager.js, line 733: unreachable code after return statement
+JavaScript warning: https://school.kotar.cet.ac.il/ClientResourcesServingHandler.ashx?h=8579938751f1629ec0c271e140d744cb10662f99&t=javascript&minify=True, line 90: unreachable code after return statement
+JavaScript warning: https://school.kotar.cet.ac.il/ClientResourcesServingHandler.ashx?h=8579938751f1629ec0c271e140d744cb10662f99&t=javascript&minify=True, line 90: unreachable code after return statement
+console.log: WebExtensions: reset-default-search: No addons in our list are installed.
+1614871404307	geckodriver	INFO	Listening on 127.0.0.1:54560
+1614871407367	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--headless" "--hide-scrollbars" "--disable-gpu" "-foreground" "-no-remote" "-profile" "C:\\Users\\Raz\\AppData\\Local\\Temp\\rust_mozprofilex6sIyz"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614871408813	Marionette	INFO	Listening on port 54572
+1614871408913	Marionette	WARN	TLS certificate errors will be ignored for this session
+1614871408924	Marionette	ERROR	[15] No reply from Marionette:Register
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+JavaScript warning: https://cdn.cet.ac.il/libs/cet.editorManager/1.0/cetEditorManager.js, line 733: unreachable code after return statement
+JavaScript warning: https://school.kotar.cet.ac.il/ClientResourcesServingHandler.ashx?h=8579938751f1629ec0c271e140d744cb10662f99&t=javascript&minify=True, line 90: unreachable code after return statement
+JavaScript warning: https://school.kotar.cet.ac.il/ClientResourcesServingHandler.ashx?h=8579938751f1629ec0c271e140d744cb10662f99&t=javascript&minify=True, line 90: unreachable code after return statement
+console.log: WebExtensions: reset-default-search: No addons in our list are installed.
+1614872384611	geckodriver	INFO	Listening on 127.0.0.1:60772
+1614872387689	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--headless" "--hide-scrollbars" "--disable-gpu" "-foreground" "-no-remote" "-profile" "C:\\Users\\Raz\\AppData\\Local\\Temp\\rust_mozprofile4lZNnz"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614872388961	Marionette	INFO	Listening on port 60787
+1614872389226	Marionette	WARN	TLS certificate errors will be ignored for this session
+1614872389234	Marionette	ERROR	[15] No reply from Marionette:Register
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+JavaScript warning: https://cdn.cet.ac.il/libs/cet.editorManager/1.0/cetEditorManager.js, line 733: unreachable code after return statement
+JavaScript warning: https://school.kotar.cet.ac.il/ClientResourcesServingHandler.ashx?h=8579938751f1629ec0c271e140d744cb10662f99&t=javascript&minify=True, line 90: unreachable code after return statement
+JavaScript warning: https://school.kotar.cet.ac.il/ClientResourcesServingHandler.ashx?h=8579938751f1629ec0c271e140d744cb10662f99&t=javascript&minify=True, line 90: unreachable code after return statement
+console.log: WebExtensions: reset-default-search: No addons in our list are installed.
+JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
+JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
+JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
+eadless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614872790507	Marionette	INFO	Listening on port 61720
+1614872790830	Marionette	WARN	TLS certificate errors will be ignored for this session
+1614872790839	Marionette	ERROR	[15] No reply from Marionette:Register
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+JavaScript warning: https://cdn.cet.ac.il/libs/cet.editorManager/1.0/cetEditorManager.js, line 733: unreachable code after return statement
+JavaScript warning: https://school.kotar.cet.ac.il/ClientResourcesServingHandler.ashx?h=8579938751f1629ec0c271e140d744cb10662f99&t=javascript&minify=True, line 90: unreachable code after return statement
+JavaScript warning: https://school.kotar.cet.ac.il/ClientResourcesServingHandler.ashx?h=8579938751f1629ec0c271e140d744cb10662f99&t=javascript&minify=True, line 90: unreachable code after return statement
+console.log: WebExtensions: reset-default-search: No addons in our list are installed.
+ner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--headless" "--hide-scrollbars" "--disable-gpu" "-foreground" "-no-remote" "-profile" "C:\\Users\\Raz\\AppData\\Local\\Temp\\rust_mozprofileMaT8Xl"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614872844223	Marionette	INFO	Listening on port 61838
+1614872844501	Marionette	WARN	TLS certificate errors will be ignored for this session
+1614872844511	Marionette	ERROR	[15] No reply from Marionette:Register
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+JavaScript warning: https://cdn.cet.ac.il/libs/cet.editorManager/1.0/cetEditorManager.js, line 733: unreachable code after return statement
+JavaScript warning: https://school.kotar.cet.ac.il/ClientResourcesServingHandler.ashx?h=8579938751f1629ec0c271e140d744cb10662f99&t=javascript&minify=True, line 90: unreachable code after return statement
+JavaScript warning: https://school.kotar.cet.ac.il/ClientResourcesServingHandler.ashx?h=8579938751f1629ec0c271e140d744cb10662f99&t=javascript&minify=True, line 90: unreachable code after return statement
+console.log: WebExtensions: reset-default-search: No addons in our list are installed.
+ner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--headless" "--hide-scrollbars" "--disable-gpu" "-foreground" "-no-remote" "-profile" "C:\\Users\\Raz\\AppData\\Local\\Temp\\rust_mozprofileJv4keu"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614872965684	Marionette	INFO	Listening on port 51736
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+console.log: WebExtensions: reset-default-search: No addons in our list are installed.
+FO	Listening on 127.0.0.1:51802
+1614872988905	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--headless" "--hide-scrollbars" "--disable-gpu" "-foreground" "-no-remote" "-profile" "C:\\Users\\Raz\\AppData\\Local\\Temp\\rust_mozprofilevAH0nv"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614872990089	Marionette	INFO	Listening on port 51813
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+console.log: WebExtensions: reset-default-search: No addons in our list are installed.
+ner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--headless" "--hide-scrollbars" "--disable-gpu" "-foreground" "-no-remote" "-profile" "C:\\Users\\Raz\\AppData\\Local\\Temp\\rust_mozprofileAwHY4j"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614873006666	Marionette	INFO	Listening on port 51876
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+console.log: WebExtensions: reset-default-search: No addons in our list are installed.

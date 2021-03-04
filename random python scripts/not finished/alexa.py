@@ -2,6 +2,7 @@ import pyttsx3
 import requests, json 
 import pytemperature
 import speech_recognition as sr
+import pyaudio
 
 
 def main():
@@ -14,13 +15,6 @@ def main():
 	# seting volume
 	engine.setProperty('volume', 1)
 
-	print(weatherReport())
-
-	#s = "hey Itay aata mekable bagarone"
-	#engine.say(s)
-	#engine.runAndWait()
-
-'''
 	# read input
 	print("speak")
 	while True:
@@ -40,7 +34,7 @@ def main():
 
 	# why do I have to do this
 	engine.stop()
-	'''
+	
 
 # speech to text
 def recognize_speech_from_mic():
