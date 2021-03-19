@@ -87,7 +87,9 @@ JavaScript warning: https://cdn.cet.ac.il/libs/cet.editorManager/1.0/cetEditorMa
 JavaScript warning: https://school.kotar.cet.ac.il/ClientResourcesServingHandler.ashx?h=8579938751f1629ec0c271e140d744cb10662f99&t=javascript&minify=True, line 90: unreachable code after return statement
 JavaScript warning: https://school.kotar.cet.ac.il/ClientResourcesServingHandler.ashx?h=8579938751f1629ec0c271e140d744cb10662f99&t=javascript&minify=True, line 90: unreachable code after return statement
 console.log: WebExtensions: reset-default-search: No addons in our list are installed.
-ner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--headless" "--hide-scrollbars" "--disable-gpu" "-foreground" "-no-remote" "-profile" "C:\\Users\\Raz\\AppData\\Local\\Temp\\rust_mozprofileZRNjbd"
+[Child 19156, IPC I/O Child] WARNING: pipe error: 232: file /builds/worker/checkouts/gecko/ipc/chromium/src/chrome/common/ipc_channel_win.cc:545
+Exiting due to channel error.
+ "C:\\Users\\Raz\\AppData\\Local\\Temp\\rust_mozprofileZRNjbd"
 *** You are running in headless mode.
 console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
 1614869620090	Marionette	INFO	Listening on port 63030
@@ -98,7 +100,8 @@ JavaScript warning: https://cdn.cet.ac.il/libs/cet.editorManager/1.0/cetEditorMa
 JavaScript warning: https://school.kotar.cet.ac.il/ClientResourcesServingHandler.ashx?h=8579938751f1629ec0c271e140d744cb10662f99&t=javascript&minify=True, line 90: unreachable code after return statement
 JavaScript warning: https://school.kotar.cet.ac.il/ClientResourcesServingHandler.ashx?h=8579938751f1629ec0c271e140d744cb10662f99&t=javascript&minify=True, line 90: unreachable code after return statement
 console.log: WebExtensions: reset-default-search: No addons in our list are installed.
-ner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--headless" "--hide-scrollbars" "--disable-gpu" "-foreground" "-no-remote" "-profile" "C:\\Users\\Raz\\AppData\\Local\\Temp\\rust_mozprofileABtxnM"
+Exiting due to channel error.
+Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--headless" "--hide-scrollbars" "--disable-gpu" "-foreground" "-no-remote" "-profile" "C:\\Users\\Raz\\AppData\\Local\\Temp\\rust_mozprofileABtxnM"
 *** You are running in headless mode.
 console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
 1614869663251	Marionette	INFO	Listening on port 52849
@@ -109,8 +112,9 @@ JavaScript warning: https://cdn.cet.ac.il/libs/cet.editorManager/1.0/cetEditorMa
 JavaScript warning: https://school.kotar.cet.ac.il/ClientResourcesServingHandler.ashx?h=8579938751f1629ec0c271e140d744cb10662f99&t=javascript&minify=True, line 90: unreachable code after return statement
 JavaScript warning: https://school.kotar.cet.ac.il/ClientResourcesServingHandler.ashx?h=8579938751f1629ec0c271e140d744cb10662f99&t=javascript&minify=True, line 90: unreachable code after return statement
 console.log: WebExtensions: reset-default-search: No addons in our list are installed.
-1614871404307	geckodriver	INFO	Listening on 127.0.0.1:54560
-1614871407367	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--headless" "--hide-scrollbars" "--disable-gpu" "-foreground" "-no-remote" "-profile" "C:\\Users\\Raz\\AppData\\Local\\Temp\\rust_mozprofilex6sIyz"
+Exiting due to channel error.
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+ner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--headless" "--hide-scrollbars" "--disable-gpu" "-foreground" "-no-remote" "-profile" "C:\\Users\\Raz\\AppData\\Local\\Temp\\rust_mozprofilex6sIyz"
 *** You are running in headless mode.
 console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
 1614871408813	Marionette	INFO	Listening on port 54572
@@ -121,8 +125,10 @@ JavaScript warning: https://cdn.cet.ac.il/libs/cet.editorManager/1.0/cetEditorMa
 JavaScript warning: https://school.kotar.cet.ac.il/ClientResourcesServingHandler.ashx?h=8579938751f1629ec0c271e140d744cb10662f99&t=javascript&minify=True, line 90: unreachable code after return statement
 JavaScript warning: https://school.kotar.cet.ac.il/ClientResourcesServingHandler.ashx?h=8579938751f1629ec0c271e140d744cb10662f99&t=javascript&minify=True, line 90: unreachable code after return statement
 console.log: WebExtensions: reset-default-search: No addons in our list are installed.
-1614872384611	geckodriver	INFO	Listening on 127.0.0.1:60772
-1614872387689	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--headless" "--hide-scrollbars" "--disable-gpu" "-foreground" "-no-remote" "-profile" "C:\\Users\\Raz\\AppData\\Local\\Temp\\rust_mozprofile4lZNnz"
+[Child 9996, IPC I/O Child] WARNING: pipe error: 232: file /builds/worker/checkouts/gecko/ipc/chromium/src/chrome/common/ipc_channel_win.cc:545
+Exiting due to channel error.
+Exiting due to channel error.
+ars" "--disable-gpu" "-foreground" "-no-remote" "-profile" "C:\\Users\\Raz\\AppData\\Local\\Temp\\rust_mozprofile4lZNnz"
 *** You are running in headless mode.
 console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
 1614872388961	Marionette	INFO	Listening on port 60787
@@ -136,8 +142,9 @@ console.log: WebExtensions: reset-default-search: No addons in our list are inst
 JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
 JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
 JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
-eadless mode.
-console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+Exiting due to channel error.
+Exiting due to channel error.
+ file exists, new profile?" (new Error("", "(unknown module)"))
 1614872790507	Marionette	INFO	Listening on port 61720
 1614872790830	Marionette	WARN	TLS certificate errors will be ignored for this session
 1614872790839	Marionette	ERROR	[15] No reply from Marionette:Register
@@ -146,8 +153,11 @@ JavaScript warning: https://cdn.cet.ac.il/libs/cet.editorManager/1.0/cetEditorMa
 JavaScript warning: https://school.kotar.cet.ac.il/ClientResourcesServingHandler.ashx?h=8579938751f1629ec0c271e140d744cb10662f99&t=javascript&minify=True, line 90: unreachable code after return statement
 JavaScript warning: https://school.kotar.cet.ac.il/ClientResourcesServingHandler.ashx?h=8579938751f1629ec0c271e140d744cb10662f99&t=javascript&minify=True, line 90: unreachable code after return statement
 console.log: WebExtensions: reset-default-search: No addons in our list are installed.
-ner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--headless" "--hide-scrollbars" "--disable-gpu" "-foreground" "-no-remote" "-profile" "C:\\Users\\Raz\\AppData\\Local\\Temp\\rust_mozprofileMaT8Xl"
-*** You are running in headless mode.
+[Child 24032, IPC I/O Child] WARNING: pipe error: 232: file /builds/worker/checkouts/gecko/ipc/chromium/src/chrome/common/ipc_channel_win.cc:545
+Exiting due to channel error.
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+Exiting due to channel error.
+adless mode.
 console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
 1614872844223	Marionette	INFO	Listening on port 61838
 1614872844501	Marionette	WARN	TLS certificate errors will be ignored for this session
@@ -163,7 +173,8 @@ console.warn: SearchSettings: "get: No settings file exists, new profile?" (new 
 1614872965684	Marionette	INFO	Listening on port 51736
 console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
 console.log: WebExtensions: reset-default-search: No addons in our list are installed.
-FO	Listening on 127.0.0.1:51802
+Exiting due to channel error.
+
 1614872988905	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--headless" "--hide-scrollbars" "--disable-gpu" "-foreground" "-no-remote" "-profile" "C:\\Users\\Raz\\AppData\\Local\\Temp\\rust_mozprofilevAH0nv"
 *** You are running in headless mode.
 console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
@@ -176,3 +187,4 @@ console.warn: SearchSettings: "get: No settings file exists, new profile?" (new 
 1614873006666	Marionette	INFO	Listening on port 51876
 console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
 console.log: WebExtensions: reset-default-search: No addons in our list are installed.
+Exiting due to channel error.
