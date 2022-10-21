@@ -39,7 +39,7 @@ def main():
 
 def start():
 
-	pygame.display.set_caption('Template')
+	pygame.display.set_caption('???')
 
 
 def event():
@@ -68,7 +68,7 @@ def draw():
 
 	screen.fill(BLACK)
 
-	#pygame.draw.circle(screen, WHITE, (x, y), width)
+	pygame.draw.circle(screen, WHITE, (0, 0), 20)
 	#pygame.draw.line(screen, WHITE, (x1, y1), (x2, y2), width)
 
 if __name__ == '__main__':
