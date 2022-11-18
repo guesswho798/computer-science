@@ -12,10 +12,12 @@ class Weapon(Task):
 		self.map = map
 		self.submarine = submarine
 		self.weapon_image = pygame.transform.scale(pygame.image.load("assets\\weapon.png"), (int(self.map.minigames_size), int(self.map.minigames_size)))
+		self.out_of_ammo_image = pygame.transform.scale(pygame.image.load("assets\\out_of_ammo.png"), (int(self.map.minigames_size), int(self.map.minigames_size)))
 		self.arrow_image = pygame.transform.scale(pygame.image.load("assets\\arrow.png"), (int(self.map.block_size), int(self.map.block_size*2)))
 		self.angle = 0
+		self.has_ammo = True
 		self.start_timer = 0
-		self.time_to_reload = 10
+		self.time_to_reload_animation = 0.02
 		self.acceptable_miss_angle = 15
 
 	def input(self, _):
@@ -34,9 +36,9 @@ class Weapon(Task):
 			networking_manager.send(["weapon", [self.angle, key[pygame.K_f]]])
   
 	def shoot(self):
-		if self.start_timer == 0:
-			# starting reload timer
+		if self.has_ammo:
 			self.start_timer = time.time()
+			self.has_ammo = False
    
 			angle = -self.angle
 			if angle < 0:
@@ -77,7 +79,10 @@ class Weapon(Task):
      
 		# background
 		x, y = self.coordinates_to_position(0, 0)
-		screen.blit(self.weapon_image, (x, y))
+		if self.has_ammo:
+			screen.blit(self.weapon_image, (x, y))
+		else:
+			screen.blit(self.out_of_ammo_image, (x, y))
   
 		# arrow
 		x, y = self.coordinates_to_position(4, 2)
@@ -86,16 +91,12 @@ class Weapon(Task):
 		screen.blit(rotated_image, new_rect)
   
 		# reload update, not for drawing
-		if self.time_to_reload == int(time.time() - self.start_timer):
+		if self.time_to_reload_animation <= int(time.time() - self.start_timer):
 			self.start_timer = 0
    
 		# reload bar and button press "animation"
 		x, y = self.coordinates_to_position(2, 9)
-		max_width = self.map.minigames_size - 160
-		reload_percent = (time.time() - self.start_timer) / self.time_to_reload
-  
-		pygame.draw.rect(screen, GRAY, pygame.Rect(x, y+2, max_width * reload_percent, 25))
-		if reload_percent < 0.03:
+		if self.start_timer != 0:
 			x, y = self.coordinates_to_position(4, 7)
 			pygame.draw.circle(screen, RED, (x+55, y), self.map.block_size+15)
    

@@ -53,8 +53,8 @@ def sumOfWords(numOfWords):
 def main():
 
 	print(gen_random_number(10000000000000000))
-	#print(sumOfLetters(37))
-	#print(sumOfWords(7))
+	print(sumOfLetters(37))
+	print(sumOfWords(7))
 
 
 if __name__ == '__main__':

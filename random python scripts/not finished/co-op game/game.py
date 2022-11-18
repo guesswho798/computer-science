@@ -16,15 +16,15 @@ class Game:
 		global networking_manager
 
 		# DEBUG remove this
-		self.game_room.main_loop()
+		# self.game_room.main_loop()
   
 		# self.menu.main_loop()
-		# self.menu.online_menu()
+		self.menu.online_menu()
   
-		# networking_manager.make_connection()
+		networking_manager.make_connection()
 
-		# if networking_manager.is_server:
-		# 	self.waiting_room.start()
+		if networking_manager.is_server:
+			self.waiting_room.start()
 
       
-		# self.game_room.main_loop()
+		self.game_room.main_loop()

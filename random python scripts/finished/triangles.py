@@ -16,7 +16,7 @@ YELLOW = (255, 255, 0)
 S_X = 1300      # size of screen x value
 S_Y = 700       # size of screen y value
 points = list() # a list of all points
-numOfPoints = 100
+numOfPoints = 500
 speed = 5
 size = 5
 t = time.time()
@@ -27,7 +27,7 @@ b = True
 
 #initializing
 pygame.init()
-screen = pygame.display.set_mode([S_X, S_Y], pygame.FULLSCREEN)
+screen = pygame.display.set_mode([S_X, S_Y])
 #screen = pygame.display.set_mode([S_X, S_Y])
 clock = pygame.time.Clock()
 done = False
@@ -97,9 +97,10 @@ def main():
 
 	start()
 
-	screen.fill(BLACK)
 
 	while not done:
+
+		screen.fill(BLACK)
 
 		event()
 

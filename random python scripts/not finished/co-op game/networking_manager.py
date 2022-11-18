@@ -19,6 +19,10 @@ class Networking_manager:
 		self.new_coords = None
 		self.move = None
 		self.weapon = None
+		self.repair = None
+		self.ammo = None
+		self.enemies = None
+		self.hit = None
 	
 	def __del__(self):
   
@@ -39,12 +43,20 @@ class Networking_manager:
 			type = obj[0]
 			data = obj[1]
    
-			if type == "new coords":
+			if type == "new_coords":
 				self.new_coords = data
 			elif type == "move":
 				self.move = data
 			elif type == "weapon":
 				self.weapon = data
+			elif type == "ammo":
+				self.ammo = data
+			elif type == "repair":
+				self.repair = data
+			elif type == "enemies":
+				self.enemies = data
+			elif type == "hit":
+				self.hit = data
    
 	def send(self, obj):
 		if self.socket:

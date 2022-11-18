@@ -34,7 +34,7 @@ class Navigation(Task):
 			self.submarine.move(x, y)
 			
 			if networking_manager:
-				networking_manager.send(["new coords", (x, y)])
+				networking_manager.send(["new_coords", (x, y)])
      
 	def draw_minigame(self):
      

@@ -14,7 +14,7 @@ YELLOW = (255, 255, 0)
 S_X = 1100      #size of screen x value
 S_Y = 600       #size of screen y value
 points = list() #[x, y, momentum x, momentum y, teamnumber, health]
-numOfPoints = 10000
+numOfPoints = 100
 
 #initializing
 pygame.init()

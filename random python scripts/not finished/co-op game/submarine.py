@@ -3,6 +3,7 @@ import time
 
 class Submarine:
 	def __init__(self):
+		self.max_health = 100
 		self.health = 100
 		self.x = 5
 		self.y = 5
@@ -23,3 +24,10 @@ class Submarine:
 		if self.time_to_move == int(time.time() - self.start_move_time):
 			self.x, self.y = path.pop(0)
 			self.start_move_time = time.time()
+   
+	def hit(self):
+		self.health -= 20
+		# screen shake
+  
+	def repair(self):
+		self.health += 20

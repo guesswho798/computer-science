@@ -1,3 +1,4 @@
+from difflib import IS_CHARACTER_JUNK
 import pygame
 from common import *
 from sprite import Sprite
@@ -27,6 +28,8 @@ class Player(Sprite):
 		self.gravity = 0.75
 		self.min_jumpspeed = 4
 		self.animation_slowed = 5
+  
+		self.is_carring_ammo = False
   
 		if main:
 			self.prev_key = pygame.key.get_pressed()
@@ -74,11 +77,17 @@ class Player(Sprite):
 			if key[left_key]:
 				self.facing_left = True
 				self.walk_animation()
-				hsp = -self.speed
+				if self.is_carring_ammo:
+					hsp = -self.speed / 2
+				else:
+					hsp = -self.speed
 			elif key[right_key]:
 				self.facing_left = False
 				self.walk_animation()
-				hsp = self.speed
+				if self.is_carring_ammo:
+					hsp = self.speed / 2
+				else:
+					hsp = self.speed
 			else:
 				if self.facing_left:
 					self.image = pygame.transform.flip(self.stand_image, True, False).convert_alpha()
